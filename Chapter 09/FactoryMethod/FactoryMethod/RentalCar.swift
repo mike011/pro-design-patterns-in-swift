@@ -3,7 +3,7 @@ class RentalCar {
     private var passengersBV:Int;
     private var priceBV:Float;
     
-    private init(name:String, passengers:Int, price:Float) {
+    fileprivate init(name:String, passengers:Int, price:Float) {
         self.nameBV = name;
         self.passengersBV = passengers;
         self.priceBV = price;
@@ -23,17 +23,17 @@ class RentalCar {
             default:
                 carImpl = nil;
         }
-        return carImpl?.createRentalCar(passengers);
+        return carImpl?.createRentalCar(passengers: passengers);
     }
 }
 
 class Compact : RentalCar {
     
-    private convenience init() {
+    fileprivate convenience init() {
         self.init(name: "VW Golf", passengers: 3, price: 20);
     }
     
-    private override init(name: String, passengers: Int, price: Float) {
+    fileprivate override init(name: String, passengers: Int, price: Float) {
         super.init(name: name, passengers: passengers, price: price);
     }
     
