@@ -1,7 +1,7 @@
 import Foundation
 
-let passengers = [1, 3, 5];
+let passengers = [1, 3, 5]
 
 for p in passengers {
-    print("\(p) passengers: \(CarSelector.selectCar(passengers: p)!)");
+    print("\(p) passengers: \(CarSelector.selectCar(passengers: p)!)")
 }

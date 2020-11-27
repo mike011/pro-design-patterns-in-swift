@@ -1,2 +1,2 @@
-let myObject = MyClass();
-myObject.writeHello();
+let myObject = MyClass()
+myObject.writeHello()

@@ -1,33 +1,31 @@
 protocol View {
-    
-    func execute();
+    func execute()
 }
 
-class PersonListView : View {
-    private let people:[Person];
-    
-    init(data:[Person]) {
-        self.people = data;
+class PersonListView: View {
+    private let people: [Person]
+
+    init(data: [Person]) {
+        people = data
     }
-    
+
     func execute() {
         for person in people {
-            println(person);
+            println(person)
         }
     }
 }
 
-class CityListView : View {
-    private let cities:[String];
-    
-    init(data:[String]) {
-        self.cities = data;
+class CityListView: View {
+    private let cities: [String]
+
+    init(data: [String]) {
+        cities = data
     }
-    
+
     func execute() {
-        for city in self.cities {
-            println("City: \(city)");
+        for city in cities {
+            println("City: \(city)")
         }
     }
 }
-

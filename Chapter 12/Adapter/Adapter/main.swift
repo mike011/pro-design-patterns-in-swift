@@ -1,12 +1,12 @@
 let search = SearchTool(dataSources: SalesDataSource(),
-    DevelopmentDataSource(), NewCoDirectoryAdapter());
+                        DevelopmentDataSource(), NewCoDirectoryAdapter())
 
-println("--List--");
+println("--List--")
 for e in search.employees {
-    println("Name: \(e.name)");
+    println("Name: \(e.name)")
 }
 
-println("--Search--");
+println("--Search--")
 for e in search.search("VP", type: SearchTool.SearchType.TITLE) {
-    println("Name: \(e.name), Title: \(e.title)");
+    println("Name: \(e.name), Title: \(e.title)")
 }

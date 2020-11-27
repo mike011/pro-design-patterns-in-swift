@@ -1,36 +1,34 @@
 class Channel {
-    
     enum Channels {
-        case Landline;
-        case Wireless;
-        case Satellite;
+        case Landline
+        case Wireless
+        case Satellite
     }
-    
-    class func getChannel(channelType:Channels) -> Channel {
+
+    class func getChannel(channelType: Channels) -> Channel {
         switch channelType {
         case .Landline:
-            return LandlineChannel();
+            return LandlineChannel()
         case .Wireless:
-            return WirelessChannel();
+            return WirelessChannel()
         case .Satellite:
-            return SatelliteChannel();
+            return SatelliteChannel()
         }
     }
-    
-    func sendMessage(msg:Message) {
-        fatalError("Not implemented");
+
+    func sendMessage(msg _: Message) {
+        fatalError("Not implemented")
     }
 }
 
-class LandlineChannel : Channel {
+class LandlineChannel: Channel {
     override func sendMessage(msg: Message) {
-        println("Landline: \(msg.contentToSend)");
+        println("Landline: \(msg.contentToSend)")
     }
-    
 }
 
-class WirelessChannel : Channel {
+class WirelessChannel: Channel {
     override func sendMessage(msg: Message) {
-        println("Wireless: \(msg.contentToSend)");
+        println("Wireless: \(msg.contentToSend)")
     }
 }

@@ -26,14 +26,14 @@ class Calculator {
     }
 
     private func addMacro(method: @escaping (Calculator) -> (Int) -> Void, amount: Int) {
-        queue.sync() { () in
+        queue.sync { () in
             self.history.append { calc in method(calc)(amount) }
         }
     }
 
     func getMacroCommand() -> ((Calculator) -> Void) {
         var commands = [CommandClosure]()
-        queue.sync() { () in
+        queue.sync { () in
             commands = history
         }
         return { calc in

@@ -1,45 +1,48 @@
-class CompactCarFactory : CarFactory {
+class CompactCarFactory: CarFactory {
     override func createFloorplan() -> Floorplan {
-        return StandardFloorplan();
+        return StandardFloorplan()
     }
+
     override func createSuspension() -> Suspension {
-        return RoadSuspension.getInstance();
+        return RoadSuspension.getInstance()
     }
+
     override func createDrivetrain() -> Drivetrain {
-        return FrontWheelDrive();
+        return FrontWheelDrive()
     }
 }
 
-class SportsCarFactory : CarFactory {
-    
+class SportsCarFactory: CarFactory {
     override func createFloorplan() -> Floorplan {
-        return ShortFloorplan();
+        return ShortFloorplan()
     }
+
     override func createSuspension() -> Suspension {
-        return RaceSuspension.getInstance();
+        return RaceSuspension.getInstance()
     }
+
     override func createDrivetrain() -> Drivetrain {
-        return AllWheelDrive();
+        return AllWheelDrive()
     }
-    
-    override class var sharedInstance:CarFactory? {
-        get {
-            struct SingletonWrapper {
-                static let singleton = SportsCarFactory();
-            }
-            return SingletonWrapper.singleton;
+
+    override class var sharedInstance: CarFactory? {
+        enum SingletonWrapper {
+            static let singleton = SportsCarFactory()
         }
+        return SingletonWrapper.singleton
     }
 }
 
-class SUVCarFactory : CarFactory {
+class SUVCarFactory: CarFactory {
     override func createFloorplan() -> Floorplan {
-        return LongFloorplan();
+        return LongFloorplan()
     }
+
     override func createSuspension() -> Suspension {
-        return OffRoadSuspension.getInstance();
+        return OffRoadSuspension.getInstance()
     }
+
     override func createDrivetrain() -> Drivetrain {
-        return AllWheelDrive();
+        return AllWheelDrive()
     }
 }

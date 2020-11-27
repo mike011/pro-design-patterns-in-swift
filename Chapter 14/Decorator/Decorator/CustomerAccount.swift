@@ -1,29 +1,29 @@
 import Foundation
 
 class CustomerAccount {
-    let customerName:String;
-    var purchases = [Purchase]();
-    
-    init(name:String) {
-        self.customerName = name;
+    let customerName: String
+    var purchases = [Purchase]()
+
+    init(name: String) {
+        customerName = name
     }
-    
-    func addPurchase(purchase:Purchase) {
-        self.purchases.append(purchase);
+
+    func addPurchase(purchase: Purchase) {
+        purchases.append(purchase)
     }
-    
+
     func printAccount() {
-        var total:Float = 0;
+        var total: Float = 0
         for p in purchases {
-            total += p.totalPrice;
-            println("Purchase \(p), Price \(formatCurrencyString(p.totalPrice))");
+            total += p.totalPrice
+            println("Purchase \(p), Price \(formatCurrencyString(p.totalPrice))")
         }
-        println("Total due: \(formatCurrencyString(total))");
+        println("Total due: \(formatCurrencyString(total))")
     }
-    
-    func formatCurrencyString(number:Float) -> String {
-        let formatter = NSNumberFormatter();
-        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle;
-        return formatter.stringFromNumber(number) ?? "";
+
+    func formatCurrencyString(number: Float) -> String {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
+        return formatter.stringFromNumber(number) ?? ""
     }
 }

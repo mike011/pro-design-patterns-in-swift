@@ -1,52 +1,50 @@
 import Foundation
 
 final class NetworkPool {
-    private let connectionCount = 3;
-    private var connections = [NetworkConnection]();
-    private var semaphore:dispatch_semaphore_t;
-    private var queue:dispatch_queue_t;
-    private var itemsCreated = 0;
-    
+    private let connectionCount = 3
+    private var connections = [NetworkConnection]()
+    private var semaphore: DispatchSemaphore
+    private var queue: DispatchQueue
+    private var itemsCreated = 0
+
     private init() {
-        semaphore = dispatch_semaphore_create(connectionCount);
-        queue = dispatch_queue_create("networkpoolQ", DISPATCH_QUEUE_SERIAL);
+        semaphore = DispatchSemaphore(value: connectionCount)
+        queue = DispatchQueue(label: "networkpoolQ")
     }
-    
+
     private func doGetConnection() -> NetworkConnection {
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        var result:NetworkConnection? = nil;
-        dispatch_sync(queue, {() in
-            if (self.connections.count > 0) {
-                result = self.connections.removeAtIndex(0);
-            } else if (self.itemsCreated < self.connectionCount) {
-                result = NetworkConnection();
-                self.itemsCreated++;
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        var result: NetworkConnection?
+        queue.sync { () in
+            if self.connections.count > 0 {
+                result = self.connections.remove(at: 0)
+            } else if self.itemsCreated < self.connectionCount {
+                result = NetworkConnection()
+                self.itemsCreated += 1
             }
-        });
-        return result!;
-    }
-    
-    private func doReturnConnection(conn:NetworkConnection) {
-        dispatch_async(queue, {() in
-            self.connections.append(conn);
-            dispatch_semaphore_signal(self.semaphore);
-        });
-    }
-    
-    class func getConnection() -> NetworkConnection {
-        return sharedInstance.doGetConnection();
-    }
-    
-    class func returnConnecton(conn:NetworkConnection) {
-        sharedInstance.doReturnConnection(conn);
-    }
-    
-    private class var sharedInstance:NetworkPool {
-        get {
-            struct SingletonWrapper {
-                static let singleton = NetworkPool();
-            }
-            return SingletonWrapper.singleton;
         }
+        return result!
+    }
+
+    private func doReturnConnection(conn: NetworkConnection) {
+        queue.async { () in
+            self.connections.append(conn)
+            self.semaphore.signal()
+        }
+    }
+
+    class func getConnection() -> NetworkConnection {
+        return sharedInstance.doGetConnection()
+    }
+
+    class func returnConnecton(conn: NetworkConnection) {
+        sharedInstance.doReturnConnection(conn: conn)
+    }
+
+    private class var sharedInstance: NetworkPool {
+        enum SingletonWrapper {
+            static let singleton = NetworkPool()
+        }
+        return SingletonWrapper.singleton
     }
 }

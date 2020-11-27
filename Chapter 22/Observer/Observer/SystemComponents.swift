@@ -1,51 +1,49 @@
-class ActivityLog : Observer {
-    
-    func notify(notification:Notification) {
+class ActivityLog: Observer {
+    func notify(notification: Notification) {
         println("Auth request for \(notification.type.rawValue) "
-            + "Success: \(notification.data!)");
+            + "Success: \(notification.data!)")
     }
-    
-    func logActivity(activity:String) {
-        println("Log: \(activity)");
+
+    func logActivity(activity: String) {
+        println("Log: \(activity)")
     }
 }
 
-class FileCache : Observer {
-    func notify(notification:Notification) {
+class FileCache: Observer {
+    func notify(notification: Notification) {
         if let authNotification = notification as? AuthenticationNotification {
-            if (authNotification.requestSuccessed
-                && authNotification.userName != nil) {
-                    loadFiles(authNotification.userName!);
+            if authNotification.requestSuccessed,
+               authNotification.userName != nil
+            {
+                loadFiles(authNotification.userName!)
             }
         }
     }
-    
-    func loadFiles(user:String) {
-        println("Load files for \(user)");
+
+    func loadFiles(user: String) {
+        println("Load files for \(user)")
     }
 }
 
-class AttackMonitor : MetaObserver {
-    
+class AttackMonitor: MetaObserver {
     func notifySubjectCreated(subject: Subject) {
-        if (subject is AuthenticationManager) {
-            subject.addObservers(self);
+        if subject is AuthenticationManager {
+            subject.addObservers(self)
         }
     }
-    
+
     func notifySubjectDestroyed(subject: Subject) {
-        subject.removeObserver(self);
+        subject.removeObserver(self)
     }
-    
+
     func notify(notification: Notification) {
         monitorSuspiciousActivity
-            = (notification.type == NotificationTypes.AUTH_FAIL);
+            = (notification.type == NotificationTypes.AUTH_FAIL)
     }
-    
+
     var monitorSuspiciousActivity: Bool = false {
         didSet {
-            println("Monitoring for attack: \(monitorSuspiciousActivity)");
+            println("Monitoring for attack: \(monitorSuspiciousActivity)")
         }
     }
 }
-

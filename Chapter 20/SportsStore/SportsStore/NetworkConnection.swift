@@ -1,18 +1,18 @@
 import Foundation
 
 class NetworkConnection {
-    private let flyweight:NetConnFlyweight;
-    
+    private let flyweight: NetConnFlyweight
+
     init() {
-        self.flyweight = NetConnFlyweightFactory.createFlyweight();
+        flyweight = NetConnFlyweightFactory.createFlyweight()
     }
-    
-    func getStockLevel(name:String) -> Int? {
-        NSThread.sleepForTimeInterval(Double(rand() % 2));
-        return self.flyweight.getStockLevel(name);
+
+    func getStockLevel(name: String) -> Int? {
+        Thread.sleep(forTimeInterval: Double(arc4random() % 2))
+        return flyweight.getStockLevel(name: name)
     }
-    
-    func setStockLevel(name:String, level:Int) {
-        println("Stock update: \(name) = \(level)");
-    }    
+
+    func setStockLevel(name: String, level: Int) {
+        print("Stock update: \(name) = \(level)")
+    }
 }

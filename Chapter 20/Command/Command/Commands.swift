@@ -19,7 +19,7 @@ class CommandWrapper: Command {
 class GenericCommand<T>: Command {
     private var instructions: (T) -> Void
 
-    init(instructions: @escaping (T)  -> Void) {
+    init(instructions: @escaping (T) -> Void) {
         self.instructions = instructions
     }
 

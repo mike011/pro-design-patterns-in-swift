@@ -5,6 +5,6 @@ protocol Memento {
 }
 
 protocol Originator {
-    func createMemento() -> Memento;
-    func applyMemento(memento:Memento);
+    func createMemento() -> Memento
+    func applyMemento(memento: Memento)
 }

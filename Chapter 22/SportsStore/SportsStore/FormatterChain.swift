@@ -1,42 +1,42 @@
-import UIKit;
+import UIKit
 
 class CellFormatter {
-    var nextLink:CellFormatter?;
-    
+    var nextLink: CellFormatter?
+
     func formatCell(cell: ProductTableCell) {
-        nextLink?.formatCell(cell);
+        nextLink?.formatCell(cell)
     }
-    
+
     class func createChain() -> CellFormatter {
-        let formatter = ChessFormatter();
-        formatter.nextLink = WatersportsFormatter();
-        formatter.nextLink?.nextLink = DefaultFormatter();
-        return formatter;
+        let formatter = ChessFormatter()
+        formatter.nextLink = WatersportsFormatter()
+        formatter.nextLink?.nextLink = DefaultFormatter()
+        return formatter
     }
 }
 
-class ChessFormatter : CellFormatter {
+class ChessFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
-        if (cell.product?.category == "Chess") {
-            cell.backgroundColor = UIColor.lightGrayColor();
+        if cell.product?.category == "Chess" {
+            cell.backgroundColor = UIColor.lightGrayColor()
         } else {
-            super.formatCell(cell);
+            super.formatCell(cell)
         }
     }
 }
 
-class WatersportsFormatter : CellFormatter {
+class WatersportsFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
-        if (cell.product?.category == "Watersports") {
-            cell.backgroundColor = UIColor.greenColor();
+        if cell.product?.category == "Watersports" {
+            cell.backgroundColor = UIColor.greenColor()
         } else {
-            super.formatCell(cell);
+            super.formatCell(cell)
         }
     }
 }
 
-class DefaultFormatter : CellFormatter {
+class DefaultFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
-        cell.backgroundColor = UIColor.yellowColor();
+        cell.backgroundColor = UIColor.yellowColor()
     }
 }

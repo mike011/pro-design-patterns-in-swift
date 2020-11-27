@@ -1,27 +1,25 @@
 class UserAuthentication {
-    var user:String?;
-    var authenticated:Bool = false;
-    
+    var user: String?
+    var authenticated: Bool = false
+
     private init() {
         // do nothing - stops instances being created
     }
-    
-    func authenticate(user:String, pass:String) {
-        if (pass == "secret") {
-            self.user = user;
-            self.authenticated = true;
+
+    func authenticate(user: String, pass: String) {
+        if pass == "secret" {
+            self.user = user
+            authenticated = true
         } else {
-            self.user = nil;
-            self.authenticated = false;
+            self.user = nil
+            authenticated = false
         }
     }
-    
-    class var sharedInstance:UserAuthentication {
-        get {
-            struct singletonWrapper {
-                static let singleton = UserAuthentication();
-            }
-            return singletonWrapper.singleton;
+
+    class var sharedInstance: UserAuthentication {
+        enum singletonWrapper {
+            static let singleton = UserAuthentication()
         }
+        return singletonWrapper.singleton
     }
 }

@@ -1,36 +1,36 @@
-//protocol ClearMessageChannel {
+// protocol ClearMessageChannel {
 //    func send(message:String);
-//}
+// }
 //
-//protocol SecureMessageChannel {
+// protocol SecureMessageChannel {
 //    func sendEncryptedMessage(message:String);
-//}
+// }
 //
-//protocol PriorityMessageChannel {
+// protocol PriorityMessageChannel {
 //    func sendPriority(message:String);
-//}
+// }
 
 class Communicator {
-    private let channnel:Channel;
-    
-    init (channel:Channel.Channels) {
-        self.channnel = Channel.getChannel(channel);
+    private let channnel: Channel
+
+    init(channel: Channel.Channels) {
+        channnel = Channel.getChannel(channel)
     }
-    
-    private func sendMessage(msg:Message) {
-        msg.prepareMessage();
-        channnel.sendMessage(msg);
+
+    private func sendMessage(msg: Message) {
+        msg.prepareMessage()
+        channnel.sendMessage(msg)
     }
-    
-    func sendCleartextMessage(message:String) {
-        self.sendMessage(ClearMessage(message: message));
+
+    func sendCleartextMessage(message: String) {
+        sendMessage(ClearMessage(message: message))
     }
-    
-    func sendSecureMessage(message:String) {
-        self.sendMessage(EncryptedMessage(message: message));
+
+    func sendSecureMessage(message: String) {
+        sendMessage(EncryptedMessage(message: message))
     }
-    
-    func sendPriorityMessage(message:String) {
-        self.sendMessage(PriorityMessage(message: message));
+
+    func sendPriorityMessage(message: String) {
+        sendMessage(PriorityMessage(message: message))
     }
 }
