@@ -25,8 +25,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         productStore.callback = bridge.inputCallback
     }
 
-    func motionEnded(motion _: UIEvent.EventSubtype, withEvent event: UIEvent) {
-        if event.subtype == UIEvent.EventSubtype.motionShake {
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if event?.subtype == UIEvent.EventSubtype.motionShake {
             print("Shake motion detected")
             undoManager?.undo()
         }
@@ -75,12 +75,12 @@ class ViewController: UIViewController, UITableViewDataSource {
                 currentCell = currentCell.superview!
                 if let cell = currentCell as? ProductTableCell {
                     if let product = cell.product {
-//                        let dict: [NSObject: AnyObject] = NSDictionary(objects: [product.stockLevel],
-//                                                      forKeys: [product.name])
+                        var dict = [String:Int]()
+                        dict[product.name] = product.stockLevel
 
-//                        undoManager?.registerUndo(withTarget: self,
-//                                                  selector: Selector(("undoStockLevel:")),
-//                                                  object: dict)
+                        undoManager?.registerUndo(withTarget: self,
+                                                  selector: #selector(undoStockLevel(data:)),
+                                                  object: dict)
 
                         if let stepper = sender as? UIStepper {
                             product.stockLevel = Int(stepper.value)
@@ -103,7 +103,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
     }
 
-    func undoStockLevel(data: [String: Int]) {
+    @objc func undoStockLevel(data: [String: Int]) {
         let productName = data.keys.first
         if productName != nil {
             let stockLevel = data[productName!]
