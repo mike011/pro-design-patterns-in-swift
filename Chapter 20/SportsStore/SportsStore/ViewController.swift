@@ -75,12 +75,12 @@ class ViewController: UIViewController, UITableViewDataSource {
                 currentCell = currentCell.superview!
                 if let cell = currentCell as? ProductTableCell {
                     if let product = cell.product {
-                        let dict: Any? = NSDictionary(objects: [product.stockLevel],
-                                                      forKeys: [product.name])
+//                        let dict: [NSObject: AnyObject] = NSDictionary(objects: [product.stockLevel],
+//                                                      forKeys: [product.name])
 
-                        undoManager?.registerUndo(withTarget: self,
-                                                  selector: Selector(("undoStockLevel:")),
-                                                  object: dict)
+//                        undoManager?.registerUndo(withTarget: self,
+//                                                  selector: Selector(("undoStockLevel:")),
+//                                                  object: dict)
 
                         if let stepper = sender as? UIStepper {
                             product.stockLevel = Int(stepper.value)
