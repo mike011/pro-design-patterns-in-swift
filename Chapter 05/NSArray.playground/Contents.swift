@@ -8,17 +8,17 @@ class Person: NSObject, NSCopying {
         self.name = name; self.country = country
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Person(name: name, country: country)
     }
 }
 
 var data = NSMutableArray(objects: 10, "iOS", Person(name: "Joe", country: "USA"))
-var copiedData = NSMutableArray(array: data, copyItems: true)
+var copiedData = NSMutableArray(array: data as! [Any], copyItems: true)
 
 data[0] = 20
 data[1] = "MacOS"
-(data[2] as Person).name = "Alice"
+(data[2] as! Person).name = "Alice"
 
-println("Identity: \(data === copiedData)")
-println("0: \(copiedData[0]) 1: \(copiedData[1]) 2: \(copiedData[2].name)")
+print("Identity: \(data === copiedData)")
+print("0: \(copiedData[0]) 1: \(copiedData[1]) 2: \((copiedData[2] as! Person).name)")

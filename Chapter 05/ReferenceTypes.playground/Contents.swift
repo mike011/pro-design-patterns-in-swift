@@ -1,6 +1,7 @@
 import Foundation
 
 class Location: NSObject, NSCopying {
+
     var name: String
     var address: String
 
@@ -8,12 +9,13 @@ class Location: NSObject, NSCopying {
         self.name = name; self.address = address
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Location(name: name, address: address)
     }
 }
 
 class Appointment: NSObject, NSCopying {
+
     var name: String
     var day: String
     var place: Location
@@ -23,25 +25,25 @@ class Appointment: NSObject, NSCopying {
     }
 
     func printDetails(label: String) {
-        println("\(label) with \(name) on \(day) at \(place.name), "
+        print("\(label) with \(name) on \(day) at \(place.name), "
             + "\(place.address)")
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Appointment(name: name, day: day,
-                           place: place.copy() as Location)
+                           place: place.copy() as! Location)
     }
 }
 
 var beerMeeting = Appointment(name: "Bob", day: "Mon",
                               place: Location(name: "Joe's Bar", address: "123 Main St"))
 
-var workMeeting = beerMeeting.copy() as Appointment
+var workMeeting = beerMeeting.copy() as! Appointment
 
 workMeeting.name = "Alice"
 workMeeting.day = "Fri"
 workMeeting.place.name = "Conference Rm 2"
 workMeeting.place.address = "Company HQ"
 
-beerMeeting.printDetails("Social")
-workMeeting.printDetails("Work")
+beerMeeting.printDetails(label: "Social")
+workMeeting.printDetails(label: "Work")

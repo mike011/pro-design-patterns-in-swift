@@ -1,6 +1,7 @@
 import Foundation
 
 class Person: NSObject, NSCopying {
+
     var name: String
     var country: String
 
@@ -8,7 +9,7 @@ class Person: NSObject, NSCopying {
         self.name = name; self.country = country
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Person(name: name, country: country)
     }
 }
@@ -16,7 +17,7 @@ class Person: NSObject, NSCopying {
 func deepCopy(data: [AnyObject]) -> [AnyObject] {
     return data.map { item -> AnyObject in
         if item is NSCopying, item is NSObject {
-            return (item as NSObject).copy()
+            return (item as! NSObject).copy() as AnyObject
         } else {
             return item
         }
@@ -25,7 +26,7 @@ func deepCopy(data: [AnyObject]) -> [AnyObject] {
 
 var people = [Person(name: "Joe", country: "France"),
               Person(name: "Bob", country: "USA")]
-var otherpeople = deepCopy(people) as [Person]
+var otherpeople = deepCopy(data: people) as! [Person]
 
 people[0].country = "UK"
-println("Country: \(otherpeople[0].country)")
+print("Country: \(otherpeople[0].country)")

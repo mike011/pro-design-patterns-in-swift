@@ -1,6 +1,7 @@
 import Foundation
 
 class Message: NSObject, NSCopying {
+
     var to: String
     var subject: String
 
@@ -8,7 +9,7 @@ class Message: NSObject, NSCopying {
         self.to = to; self.subject = subject
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Message(to: to, subject: subject)
     }
 }
@@ -21,7 +22,7 @@ class DetailedMessage: Message {
         super.init(to: to, subject: subject)
     }
 
-    override func copyWithZone(zone _: NSZone) -> AnyObject {
+    override func copy(with zone: NSZone? = nil) -> Any {
         return DetailedMessage(to: to,
                                subject: subject, from: from)
     }
@@ -31,10 +32,10 @@ class MessageLogger {
     var messages: [Message] = []
 
     func logMessage(msg: Message) {
-        messages.append(msg.copy() as Message)
+        messages.append(msg.copy() as! Message)
     }
 
-    func processMessages(callback: Message -> Void) {
+    func processMessages(callback: (Message) -> Void) {
         for msg in messages {
             callback(msg)
         }
@@ -44,19 +45,19 @@ class MessageLogger {
 var logger = MessageLogger()
 
 var message = Message(to: "Joe", subject: "Hello")
-logger.logMessage(message)
+logger.logMessage(msg: message)
 
 message.to = "Bob"
 message.subject = "Free for dinner?"
-logger.logMessage(message)
+logger.logMessage(msg: message)
 
-logger.logMessage(DetailedMessage(to: "Alice", subject: "Hi!", from: "Joe"))
+logger.logMessage(msg: DetailedMessage(to: "Alice", subject: "Hi!", from: "Joe"))
 
 logger.processMessages { msg -> Void in
     if let detailed = msg as? DetailedMessage {
-        println("Detailed Message - To: \(detailed.to) From: \(detailed.from)"
+        print("Detailed Message - To: \(detailed.to) From: \(detailed.from)"
             + " Subject: \(detailed.subject)")
     } else {
-        println("Message - To: \(msg.to) Subject: \(msg.subject)")
+        print("Message - To: \(msg.to) Subject: \(msg.subject)")
     }
 }

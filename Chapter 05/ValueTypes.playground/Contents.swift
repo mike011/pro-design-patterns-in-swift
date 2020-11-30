@@ -4,7 +4,7 @@ struct Appointment {
     var place: String
 
     func printDetails(label: String) {
-        println("\(label) with \(name) on \(day) at \(place)")
+        print("\(label) with \(name) on \(day) at \(place)")
     }
 }
 
@@ -15,5 +15,5 @@ workMeeting.name = "Alice"
 workMeeting.day = "Fri"
 workMeeting.place = "Conference Rm 2"
 
-beerMeeting.printDetails("Social")
-workMeeting.printDetails("Work")
+beerMeeting.printDetails(label: "Social")
+workMeeting.printDetails(label: "Work")

@@ -12,4 +12,4 @@ logitem.from = "Alice"
 logitem.data = dataArray
 
 dataArray[1] = 10
-println("Value: \(logitem.data![1])")
+print("Value: \(logitem.data![1])")
