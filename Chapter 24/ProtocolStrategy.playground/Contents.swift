@@ -1,29 +1,30 @@
+import Foundation
 import UIKit
 
 class DataSourceStrategy: NSObject, UITableViewDataSource {
-    let data: [Printable]
 
-    init(_ data: Printable...) {
+    let data: [CustomStringConvertible]
+
+    init(_ data: CustomStringConvertible...) {
         self.data = data
     }
 
-    func tableView(tableView _: UITableView,
+    func tableView(_: UITableView,
                    numberOfRowsInSection _: Int) -> Int
     {
         return data.count
     }
 
-    func tableView(tableView _: UITableView,
-                   cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = UITableViewCell()
-        cell.textLabel.text = data[indexPath.row].description
+        cell.textLabel?.text = data[indexPath.row].description
         return cell
     }
 }
 
 let dataSource = DataSourceStrategy("London", "New York", "Paris", "Rome")
-let table = UITableView(frame: CGRectMake(0, 0, 400, 200))
+let table = UITableView(frame: CGRect(origin: .zero, size: CGSize(width: 400, height: 200)))
 table.dataSource = dataSource
 table.reloadData()
 

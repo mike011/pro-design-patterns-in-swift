@@ -3,7 +3,9 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=5&amp;CharacterRangeLoc=833&amp;EndingColumnNumber=6&amp;EndingLineNumber=30&amp;StartingColumnNumber=1&amp;StartingLineNumber=30&amp;Timestamp=435666382.535906">
+         documentLocation = "file:///Users/michael/Documents/git/pro-design-patterns-in-swift/Chapter%2024/ProtocolStrategy.playground#CharacterRangeLen=5&amp;CharacterRangeLoc=840&amp;EndingColumnNumber=0&amp;EndingLineNumber=32&amp;StartingColumnNumber=1&amp;StartingLineNumber=31&amp;Timestamp=633824443.5706429"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
    </TimelineItems>
 </Timeline>

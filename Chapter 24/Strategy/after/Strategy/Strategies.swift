@@ -3,9 +3,9 @@ protocol Strategy {
 }
 
 class ClosureStrategy: Strategy {
-    private let closure: [Int] -> Int
+    private let closure: ([Int]) -> Int
 
-    init(_ closure: [Int] -> Int) {
+    init(_ closure: @escaping ([Int]) -> Int) {
         self.closure = closure
     }
 
@@ -16,12 +16,12 @@ class ClosureStrategy: Strategy {
 
 class SumStrategy: Strategy {
     func execute(values: [Int]) -> Int {
-        return values.reduce(0, combine: { $0 + $1 })
+        return values.reduce(0, { $0 + $1 })
     }
 }
 
 class MultiplyStrategy: Strategy {
     func execute(values: [Int]) -> Int {
-        return values.reduce(1, combine: { $0 * $1 })
+        return values.reduce(1, { $0 * $1 })
     }
 }

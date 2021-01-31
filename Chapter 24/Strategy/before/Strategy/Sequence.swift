@@ -8,8 +8,4 @@ final class Sequence {
     func addNumber(value: Int) {
         numbers.append(value)
     }
-
-    func compute(strategy: Strategy) -> Int {
-        return strategy.execute(numbers)
-    }
 }

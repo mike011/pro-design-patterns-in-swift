@@ -1,27 +1,27 @@
 import Foundation
 
-@objc class City {
+class City {
     let name: String
 
     init(_ name: String) {
         self.name = name
     }
 
-    func compareTo(other: City) -> NSComparisonResult {
+    func compareTo(other: City) -> ComparisonResult {
         if name == other.name {
-            return NSComparisonResult.OrderedSame
+            return ComparisonResult.orderedSame
         } else if name < other.name {
-            return NSComparisonResult.OrderedDescending
+            return ComparisonResult.orderedDescending
         } else {
-            return NSComparisonResult.OrderedAscending
+            return ComparisonResult.orderedAscending
         }
     }
 }
 
 let nsArray = NSArray(array: [City("London"), City("New York"),
                               City("Paris"), City("Rome")])
-let sorted = nsArray.sortedArrayUsingSelector("compareTo:")
+let sorted = nsArray.sortedArray(using: Selector(("compareTo:")))
 
 for city in sorted {
-    println(city.name)
+    print((city as! City).name)
 }
