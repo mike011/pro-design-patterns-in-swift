@@ -6,12 +6,10 @@ for invite in galaInvitations {
 }
 
 class NewDonors: DonorDatabase {
-    override func filter(donors: [Donor]) -> [Donor] {
-        return donors.filter { $0.lastDonation == 0 }
-    }
-
-    override func generate(donors: [Donor]) -> [String] {
-        return donors.map { "Hi \($0.firstName)" }
+    override init() {
+        super.init()
+        filter = { $0.filter({$0.lastDonation == 0})};
+        generate = { $0.map({ "Hi \($0.firstName)"})};
     }
 }
 
