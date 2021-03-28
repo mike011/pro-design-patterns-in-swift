@@ -4,7 +4,7 @@ class CellFormatter {
     var nextLink: CellFormatter?
 
     func formatCell(cell: ProductTableCell) {
-        nextLink?.formatCell(cell)
+        nextLink?.formatCell(cell: cell)
     }
 
     class func createChain() -> CellFormatter {
@@ -18,9 +18,9 @@ class CellFormatter {
 class ChessFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
         if cell.product?.category == "Chess" {
-            cell.backgroundColor = UIColor.lightGrayColor()
+            cell.backgroundColor = UIColor.lightGray
         } else {
-            super.formatCell(cell)
+            super.formatCell(cell: cell)
         }
     }
 }
@@ -28,15 +28,15 @@ class ChessFormatter: CellFormatter {
 class WatersportsFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
         if cell.product?.category == "Watersports" {
-            cell.backgroundColor = UIColor.greenColor()
+            cell.backgroundColor = UIColor.green
         } else {
-            super.formatCell(cell)
+            super.formatCell(cell: cell)
         }
     }
 }
 
 class DefaultFormatter: CellFormatter {
     override func formatCell(cell: ProductTableCell) {
-        cell.backgroundColor = UIColor.yellowColor()
+        cell.backgroundColor = UIColor.yellow
     }
 }

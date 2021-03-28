@@ -1,7 +1,7 @@
 class EventBridge {
     private let outputCallback: (String, Int) -> Void
 
-    init(callback: (String, Int) -> Void) {
+    init(callback: @escaping (String, Int) -> Void) {
         outputCallback = callback
     }
 

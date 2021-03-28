@@ -1,24 +1,27 @@
 import Foundation
 
 class Subject: NSObject {
-    dynamic var counter = 0
+    @objc dynamic var counter = 0
 }
 
 class Observer: NSObject {
     init(subject: Subject) {
         super.init()
-        subject.addObserver(self, forKeyPath: "counter",
-                            options: NSKeyValueObservingOptions.New, context: nil)
+        subject.addObserver(self,
+                            forKeyPath: "counter",
+                            options: NSKeyValueObservingOptions.new,
+                            context: nil)
     }
 
-    override func observeValueForKeyPath(keyPath: String, ofObject _: AnyObject,
-                                         change: [NSObject: AnyObject], context _: UnsafeMutablePointer<Void>)
-    {
-        println("Notification: \(keyPath) = \(change[NSKeyValueChangeNewKey]!)")
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        print("Notification: \(String(describing: keyPath)) = \(String(describing: change?[NSKeyValueChangeKey.newKey]))")
     }
 }
 
 let subject = Subject()
 let observer = Observer(subject: subject)
-subject.counter++
+subject.counter += 1
 subject.counter = 22
