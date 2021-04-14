@@ -1,8 +1,11 @@
 protocol View {
+    var exit: Bool {get set}
     func execute()
 }
 
 class PersonListView: View {
+
+    var exit = false
     private let people: [Person]
 
     init(data: [Person]) {
@@ -11,12 +14,14 @@ class PersonListView: View {
 
     func execute() {
         for person in people {
-            println(person)
+            print(person)
         }
     }
 }
 
 class CityListView: View {
+    
+    var exit = false
     private let cities: [String]
 
     init(data: [String]) {
@@ -25,7 +30,17 @@ class CityListView: View {
 
     func execute() {
         for city in cities {
-            println("City: \(city)")
+            print("City: \(city)")
         }
     }
+}
+
+class QuitView: View {
+    var exit = true
+
+    func execute() {
+        print("Thank You")
+    }
+
+
 }

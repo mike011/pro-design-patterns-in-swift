@@ -1,37 +1,51 @@
 import Foundation
 
-let repository = MemoryRepository()
+class Main {
+    private let controllerChain = Chain.create(fromRepository: MemoryRepository())
 
-let controllerChain = PersonController(repo: repository, nextController:
-    CityController(repo: repository, nextController: nil))
+    private var stdIn = FileHandle.standardInput
+    private var command = Command.listPeople
+    private var data = [String]()
 
-var stdIn = NSFileHandle.fileHandleWithStandardInput()
-var command = Command.LIST_PEOPLE
-var data = [String]()
-
-while true {
-    if let view = controllerChain.handleCommand(command, data: data) {
-        view.execute()
-        println("--Commands--")
-        for command in Command.ALL {
-            println(command.rawValue)
+    func go() {
+        while handleCommand() {
+            readInput()
         }
-    } else {
-        fatalError("No view")
     }
 
-    let input: String = NSString(data: stdIn.availableData,
-                                 encoding: NSUTF8StringEncoding) ?? ""
+    fileprivate func handleCommand() -> Bool {
+        if let view = controllerChain.handleCommand(command: command, data: data) {
+            view.execute()
 
-    let inputArray: [String] = input.split()
-
-    if inputArray.count > 0 {
-        command = Command.getFromInput(inputArray.first!) ?? Command.LIST_PEOPLE
-        if inputArray.count > 1 {
-            data = Array(inputArray[1 ... inputArray.count - 1])
+            if view.exit {
+                return false
+            }
+            print("--Commands--")
+            for command in Command.allCases {
+                print(command.rawValue)
+            }
         } else {
-            data = []
+            fatalError("No view")
         }
+        return true
     }
-    println("Command \(command.rawValue) Data \(data)")
+
+    fileprivate func readInput() {
+        let input = String(data: stdIn.availableData,
+                           encoding: String.Encoding.utf8) ?? ""
+
+        let inputArray = input.split()
+
+        if inputArray.count > 0 {
+            command = Command.getFromInput(input: inputArray.first!) ?? Command.listPeople
+            if inputArray.count > 1 {
+                data = Array(inputArray[1...inputArray.count - 1])
+            } else {
+                data = []
+            }
+        }
+        print("Command \(command.rawValue) Data \(data)")
+    }
 }
+
+Main().go()

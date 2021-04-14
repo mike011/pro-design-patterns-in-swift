@@ -1,37 +1,36 @@
 import Foundation
 
-enum Command: String {
-    case LIST_PEOPLE = "L: List People"
-    case ADD_PERSON = "A: Add Person"
-    case DELETE_PERSON = "D: Delete Person"
-    case UPDATE_PERSON = "U: Update Person"
-    case SEARCH = "S: Search"
-    case LIST_CITIES = "LC: List Cities"
-    case SEARCH_CITIES = "SC: Search Cities"
-    case DELETE_CITY = "DC: Delete City"
-
-    static let ALL = [Command.LIST_PEOPLE, Command.ADD_PERSON,
-                      Command.DELETE_PERSON, Command.UPDATE_PERSON, Command.SEARCH,
-                      Command.LIST_CITIES, Command.SEARCH_CITIES, Command.DELETE_CITY]
+enum Command: String, CaseIterable {
+    case listPeople = "L: List People"
+    case addPerson = "A: Add Person"
+    case deletePerson = "D: Delete Person"
+    case updatePerson = "U: Update Person"
+    case search = "S: Search"
+    case listCities = "LC: List Cities"
+    case searchCities = "SC: Search Cities"
+    case deleteCity = "DC: Delete City"
+    case quit = "Q: Exit the App"
 
     static func getFromInput(input: String) -> Command? {
-        switch input.lowercaseString {
+        switch input.lowercased() {
         case "l":
-            return Command.LIST_PEOPLE
+            return .listPeople
         case "a":
-            return Command.ADD_PERSON
+            return .addPerson
         case "d":
-            return Command.DELETE_PERSON
+            return .deletePerson
         case "u":
-            return Command.UPDATE_PERSON
+            return .updatePerson
         case "s":
-            return Command.SEARCH
+            return .search
         case "lc":
-            return Command.LIST_CITIES
+            return .listCities
         case "sc":
-            return Command.SEARCH_CITIES
+            return .searchCities
         case "dc":
-            return Command.DELETE_CITY
+            return .deleteCity
+        case "q":
+            return .quit
         default:
             return nil
         }
