@@ -5,39 +5,39 @@ protocol Shape {
 }
 
 protocol Visitor {
-    func visit(shape: Circle)
-    func visit(shape: Square)
-    func visit(shape: Rectangle)
+    func visit(_ shape: Circle)
+    func visit(_ shape: Square)
+    func visit(_ shape: Rectangle)
 }
 
 class AreaVisitor: Visitor {
     var totalArea: Float = 0
 
-    func visit(shape: Circle) {
+    func visit(_ shape: Circle) {
         totalArea += (3.14 * powf(shape.radius, 2))
     }
 
-    func visit(shape: Square) {
+    func visit(_ shape: Square) {
         totalArea += powf(shape.length, 2)
     }
 
-    func visit(shape: Rectangle) {
-        totalArea += (shape.xLen * shape.yLen)
+    func visit(_ shape: Rectangle) {
+        totalArea += (shape.xLength * shape.yLength)
     }
 }
 
 class EdgesVisitor: Visitor {
     var totalEdges = 0
 
-    func visit(shape _: Circle) {
+    func visit(_ _: Circle) {
         totalEdges += 1
     }
 
-    func visit(shape _: Square) {
+    func visit(_ _: Square) {
         totalEdges += 4
     }
 
-    func visit(shape _: Rectangle) {
+    func visit(_ _: Rectangle) {
         totalEdges += 4
     }
 }
