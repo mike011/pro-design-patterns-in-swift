@@ -5,27 +5,27 @@ protocol MyProtocol {
 
 class FirstClass: MyProtocol {
     func dispatch(handler: Handler) {
-        handler.handle(self)
+        handler.handle(arg: self)
     }
 }
 
 class SecondClass: MyProtocol {
     func dispatch(handler: Handler) {
-        handler.handle(self)
+        handler.handle(arg: self)
     }
 }
 
 class Handler {
     func handle(arg _: MyProtocol) {
-        println("Protocol")
+        print("Protocol")
     }
 
     func handle(arg _: FirstClass) {
-        println("First Class")
+        print("First Class")
     }
 
     func handle(arg _: SecondClass) {
-        println("Second Class")
+        print("Second Class")
     }
 }
 
@@ -33,6 +33,6 @@ let objects: [MyProtocol] = [FirstClass(), SecondClass()]
 let handler = Handler()
 
 for object in objects {
-    object.dispatch(handler)
-    // handler.handle(object);
+    object.dispatch(handler: handler)
+    //handler.handle(object);
 }

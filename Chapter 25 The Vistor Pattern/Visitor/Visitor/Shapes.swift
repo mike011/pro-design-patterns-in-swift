@@ -8,7 +8,7 @@ class Circle: Shape {
     }
 
     func accept(visitor: Visitor) {
-        visitor.visit(self)
+        visitor.visit(shape: self)
     }
 }
 
@@ -20,7 +20,7 @@ class Square: Shape {
     }
 
     func accept(visitor: Visitor) {
-        visitor.visit(self)
+        visitor.visit(shape: self)
     }
 }
 
@@ -34,7 +34,7 @@ class Rectangle: Shape {
     }
 
     func accept(visitor: Visitor) {
-        visitor.visit(self)
+        visitor.visit(shape: self)
     }
 }
 
@@ -43,13 +43,15 @@ class ShapeCollection {
 
     init() {
         shapes = [
-            Circle(radius: 2.5), Square(length: 4), Rectangle(x: 10, y: 2),
+            Circle(radius: 2.5),
+            Square(length: 4),
+            Rectangle(x: 10, y: 2),
         ]
     }
 
     func accept(visitor: Visitor) {
         for shape in shapes {
-            shape.accept(visitor)
+            shape.accept(visitor: visitor)
         }
     }
 }
