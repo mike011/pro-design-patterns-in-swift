@@ -18,18 +18,18 @@ class DataItem {
 final class BackupServer {
     let name: String
     private var data = [DataItem]()
-    private let arrayQ = dispatch_queue_create("arrayQ", DISPATCH_QUEUE_SERIAL)
+    private let arrayQ = DispatchQueue(label: "arrayQ")
 
     private init(name: String) {
         self.name = name
-        globalLogger.log("Created new server \(name)")
+        globalLogger.log(msg: "Created new server \(name)")
     }
 
     func backup(item: DataItem) {
-        dispatch_sync(arrayQ) { () in
+        arrayQ.sync() { () in
             self.data.append(item)
             globalLogger.log(
-                "\(self.name) backed up item of type \(item.type.rawValue)")
+                msg: "\(self.name) backed up item of type \(item.type.rawValue)")
         }
     }
 

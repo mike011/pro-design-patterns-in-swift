@@ -2,16 +2,31 @@ import Foundation
 
 var server = BackupServer.server
 
-let queue = dispatch_queue_create("workQueue", DISPATCH_QUEUE_CONCURRENT)
-let group = dispatch_group_create()
+server.backup(item: DataItem(type: .Email, data: "joe@example.com"))
+server.backup(item: DataItem(type: .Phone, data: "555-123-1133"))
+globalLogger.log(msg: "Backed up 2 items to \(server.name)")
 
-for count in 0 ..< 100 {
-    dispatch_group_async(group, queue) { () in
-        BackupServer.server.backup(DataItem(type: DataItem.ItemType.Email,
-                                            data: "bob@example.com"))
+var otherServer = BackupServer.server
+otherServer.backup(item: DataItem(type: .Email, data: "bob@example.com"))
+globalLogger.log(msg: "Backed up 1 item to \(otherServer.name)")
+globalLogger.printLog()
+
+
+// Dealing with concurrency
+let queue = DispatchQueue(label: "workQueue",
+                          qos: .utility,
+                          attributes: .concurrent,
+                          autoreleaseFrequency: .inherit,
+                          target: nil)
+let group = DispatchGroup()
+
+for _ in 0 ..< 100 {
+    queue.async(group: group) {
+        let data = DataItem(type: .Email, data: "bob@example.com")
+        BackupServer.server.backup(item: data)
     }
 }
 
-dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+group.wait()
 
-println("\(server.getData().count) items were backed up")
+print("\(server.getData().count) items were backed up")
