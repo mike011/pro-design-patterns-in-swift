@@ -10,10 +10,10 @@ class ProductTableCell: UITableViewCell {
 }
 
 var handler = { (p: Product) in
-    println("Change: \(p.name) \(p.stockLevel) items in stock")
 }
 
 class ViewController: UIViewController, UITableViewDataSource {
+
     @IBOutlet var totalStockLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     var productStore = ProductDataStore()
@@ -23,7 +23,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         displayStockTotal()
 
         productStore.callback = { (p: Product) in
-            for cell in self.tableView.visibleCells() {
+            for cell in self.tableView.visibleCells {
                 if let pcell = cell as? ProductTableCell {
                     if pcell.product?.name == p.name {
                         pcell.stockStepper.value = Double(p.stockLevel)
@@ -39,18 +39,15 @@ class ViewController: UIViewController, UITableViewDataSource {
         super.didReceiveMemoryWarning()
     }
 
-    func tableView(tableView _: UITableView,
-                   numberOfRowsInSection _: Int) -> Int
-    {
+    func tableView(_: UITableView,
+                   numberOfRowsInSection _: Int) -> Int {
         return productStore.products.count
     }
 
-    func tableView(tableView: UITableView,
-                   cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let product = productStore.products[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier("ProductCell")
-            as ProductTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell")
+            as! ProductTableCell
         cell.product = productStore.products[indexPath.row]
         cell.nameLabel.text = product.name
         cell.descriptionLabel.text = product.productDescription
@@ -64,17 +61,17 @@ class ViewController: UIViewController, UITableViewDataSource {
             while true {
                 currentCell = currentCell.superview!
                 if let cell = currentCell as? ProductTableCell {
-                    if let product = cell.product? {
+                    if let product = cell.product {
                         if let stepper = sender as? UIStepper {
                             product.stockLevel = Int(stepper.value)
                         } else if let textfield = sender as? UITextField {
-                            if let newValue = textfield.text.toInt()? {
+                            if let string = textfield.text, let newValue = Int(string) {
                                 product.stockLevel = newValue
                             }
                         }
                         cell.stockStepper.value = Double(product.stockLevel)
                         cell.stockField.text = String(product.stockLevel)
-                        productLogger.logItem(product)
+                        productLogger.logItem(item: product)
                     }
                     break
                 }
@@ -92,6 +89,6 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
 
         totalStockLabel.text = "\(finalTotals.0) Products in Stock. "
-            + "Total Value: \(Utils.currencyStringFromNumber(finalTotals.1))"
+            + "Total Value: \(Utils.currencyStringFromNumber(number: finalTotals.1))"
     }
 }

@@ -1,13 +1,14 @@
 import Foundation
 
 final class Library {
-    private let books: [Book]
+    private var books: [Book]
     private let pool: Pool<Book>
 
     private init(stockLevel: Int) {
         books = [Book]()
         for count in 1 ... stockLevel {
-            books.append(Book(author: "Dickens, Charles", title: "Hard Times",
+            books.append(Book(author: "Dickens, Charles",
+                              title: "Hard Times",
                               stock: count))
         }
         pool = Pool<Book>(items: books)
@@ -21,25 +22,25 @@ final class Library {
     }
 
     class func checkoutBook(reader: String) -> Book? {
-        var book = singleton.pool.getFromPool()
+        let book = singleton.pool.getFromPool()
         book?.reader = reader
-        book?.checkoutCount++
+        book?.checkoutCount += 1
         return book
     }
 
     class func returnBook(book: Book) {
         book.reader = nil
-        singleton.pool.returnToPool(book)
+        singleton.pool.returnToPool(item: book)
     }
 
     class func printReport() {
         for book in singleton.books {
-            println("...Book#\(book.stockNumber)...")
-            println("Checked out \(book.checkoutCount) times")
+            print("...Book #\(book.stockNumber)...")
+            print("Checked out \(book.checkoutCount) times")
             if book.reader != nil {
-                println("Checked out to \(book.reader!)")
+                print("Checked out to \(book.reader!)")
             } else {
-                println("In stock")
+                print("In stock")
             }
         }
     }
