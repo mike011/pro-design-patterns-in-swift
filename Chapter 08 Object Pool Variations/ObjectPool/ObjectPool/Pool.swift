@@ -1,48 +1,31 @@
 import Foundation
 
-class Pool<T: AnyObject> {
+class Pool<T> {
     private var data = [T]()
-    private let arrayQ = dispatch_queue_create("arrayQ", DISPATCH_QUEUE_SERIAL)
-    private let semaphore: dispatch_semaphore_t
+    private var arrayQ = DispatchQueue(label: "arrayQ")
+    private let semaphore: DispatchSemaphore
 
-    private let itemFactory: () -> T
-    private let itemAllocator: [T] -> Int
-    private let maxItemCount: Int
-    private var createdCount: Int = 0
-
-    init(itemCount: Int, itemFactory: () -> T, itemAllocator: [T] -> Int) {
-        maxItemCount = itemCount
-        self.itemFactory = itemFactory
-        self.itemAllocator = itemAllocator
-        semaphore = dispatch_semaphore_create(itemCount)
+    init(items: [T]) {
+        data.reserveCapacity(data.count)
+        for item in items {
+            data.append(item)
+        }
+        semaphore = DispatchSemaphore(value: items.count)
     }
 
     func getFromPool() -> T? {
         var result: T?
-
-        if dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER) == 0 {
-            dispatch_sync(arrayQ) { () in
-                if self.data.count == 0 {
-                    result = self.itemFactory()
-                    self.createdCount++
-                } else {
-                    result = self.data.removeAtIndex(self.itemAllocator(self.data))
-                }
-            }
+        semaphore.wait()
+        arrayQ.sync {
+            result = self.data.remove(at:0)
         }
         return result
     }
 
     func returnToPool(item: T) {
-        dispatch_async(arrayQ) { () in
+        arrayQ.async {
             self.data.append(item)
-            dispatch_semaphore_signal(self.semaphore)
-        }
-    }
-
-    func processPoolItems(callback: [T] -> Void) {
-        dispatch_barrier_sync(arrayQ) { () in
-            callback(self.data)
+            self.semaphore.signal()
         }
     }
 }
