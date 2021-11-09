@@ -16,7 +16,7 @@ class UserAuthentication {
         }
     }
 
-    class var sharedInstance: UserAuthentication {
+    class var shared: UserAuthentication {
         enum singletonWrapper {
             static let singleton = UserAuthentication()
         }

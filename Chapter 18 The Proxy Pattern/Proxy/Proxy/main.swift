@@ -6,14 +6,14 @@ let headers = ["Content-Length", "Content-Encoding"]
 let proxy = AccessControlProxy(url: url)
 
 for header in headers {
-    proxy.getHeader(header, callback: { header, val in
+    proxy.getHeader(header: header, callback: { header, val in
         if val != nil {
-            println("\(header): \(val!)")
+            print("\(header): \(val!)")
         }
     })
 }
 
-UserAuthentication.sharedInstance.authenticate("bob", pass: "secret")
+UserAuthentication.shared.authenticate(user: "bob", pass: "secret")
 proxy.execute()
 
-NSFileHandle.fileHandleWithStandardInput().availableData
+// FileHandle.standardInput.availableData

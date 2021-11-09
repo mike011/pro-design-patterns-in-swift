@@ -6,15 +6,15 @@ protocol StockValueFormatter {
 
 class DollarStockValueFormatter: StockValueFormatter {
     func formatTotal(total: Double) -> String {
-        let formatted = Utils.currencyStringFromNumber(total)
+        let formatted = Utils.currencyStringFromNumber(number: total)
         return "\(formatted)"
     }
 }
 
 class PoundStockValueFormatter: StockValueFormatter {
     func formatTotal(total: Double) -> String {
-        let formatted = Utils.currencyStringFromNumber(total)
-        return "£\(dropFirst(formatted))"
+        let formatted = Utils.currencyStringFromNumber(number: total)
+        return "£\(formatted.dropFirst()))"
     }
 }
 

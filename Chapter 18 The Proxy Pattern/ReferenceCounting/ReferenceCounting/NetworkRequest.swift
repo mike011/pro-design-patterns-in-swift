@@ -3,7 +3,7 @@ import Foundation
 protocol NetworkConnection {
     func connect()
     func disconnect()
-    func sendCommand(command: String)
+    func send(command: String)
 }
 
 class NetworkConnectionFactory {
@@ -22,25 +22,24 @@ class NetworkConnectionFactory {
 private class NetworkConnectionImplementation: NetworkConnection {
     typealias me = NetworkConnectionImplementation
 
-    func connect() { me.writeMessage("Connect") }
-    func disconnect() { me.writeMessage("Disconnect") }
+    func connect() { me.write(message: "Connect") }
+    func disconnect() { me.write(message: "Disconnect") }
 
-    func sendCommand(command: String) {
-        me.writeMessage("Command: \(command)")
-        NSThread.sleepForTimeInterval(1)
-        me.writeMessage("Command completed: \(command)")
+    func send(command: String) {
+        me.write(message: "Command: \(command)")
+        Thread.sleep(forTimeInterval: 1)
+        me.write(message: "Command completed: \(command)")
     }
 
-    private class func writeMessage(msg: String) {
-        dispatch_async(queue) { () in
-            println(msg)
+    private class func write(message: String) {
+        queue.async() { () in
+            print(message)
         }
     }
 
-    private class var queue: dispatch_queue_t {
+    private class var queue: DispatchQueue {
         enum singletonWrapper {
-            static let singleton = dispatch_queue_create("writeQ",
-                                                         DISPATCH_QUEUE_SERIAL)
+            static let singleton = DispatchQueue(label: "writeQ")
         }
         return singletonWrapper.singleton
     }
@@ -48,8 +47,8 @@ private class NetworkConnectionImplementation: NetworkConnection {
 
 class NetworkRequestProxy: NetworkConnection {
     private let wrappedRequest: NetworkConnection
-    private let queue = dispatch_queue_create("commandQ", DISPATCH_QUEUE_SERIAL)
-    private var referenceCount: Int = 0
+    private let queue = DispatchQueue(label: "commandQ")
+    private var referenceCount = 0
     private var connected = false
 
     init() {
@@ -59,15 +58,15 @@ class NetworkRequestProxy: NetworkConnection {
     func connect() { /* do nothing */ }
     func disconnect() { /* do nothing */ }
 
-    func sendCommand(command: String) {
-        referenceCount++
-        dispatch_sync(queue) { () in
+    func send(command: String) {
+        referenceCount += 1
+        queue.sync() { () in
             if !self.connected, self.referenceCount > 0 {
                 self.wrappedRequest.connect()
                 self.connected = true
             }
-            self.wrappedRequest.sendCommand(command)
-            self.referenceCount--
+            self.wrappedRequest.send(command: command)
+            self.referenceCount -= 1
             if self.connected, self.referenceCount == 0 {
                 self.wrappedRequest.disconnect()
                 self.connected = false

@@ -1,5 +1,5 @@
 class PriceDecorator: Product {
-    private let wrappedProduct: Product
+    fileprivate let wrappedProduct: Product
 
     required init(name _: String, description _: String, category _: String,
                   price _: Double, stockLevel _: Int)
