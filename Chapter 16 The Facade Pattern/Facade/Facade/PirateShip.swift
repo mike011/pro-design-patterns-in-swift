@@ -2,19 +2,19 @@ import Foundation
 
 class PirateShip {
     struct ShipLocation {
-        let NorthSouth: Int
-        let EastWest: Int
+        let northSouth: Int
+        let eastWest: Int
     }
 
-    var currentPosition: ShipLocation
-    var movementQueue = dispatch_queue_create("shipQ", DISPATCH_QUEUE_SERIAL)
+    private var currentPosition: ShipLocation
+    private var movementQueue = DispatchQueue(label: "shipQ")
 
     init() {
-        currentPosition = ShipLocation(NorthSouth: 5, EastWest: 5)
+        currentPosition = ShipLocation(northSouth: 5, eastWest: 5)
     }
 
-    func moveToLocation(location: ShipLocation, callback: (ShipLocation) -> Void) {
-        dispatch_async(movementQueue) { () in
+    func moveToLocation(location: ShipLocation, callback: @escaping (ShipLocation) -> Void) {
+        movementQueue.async{
             self.currentPosition = location
             callback(self.currentPosition)
         }

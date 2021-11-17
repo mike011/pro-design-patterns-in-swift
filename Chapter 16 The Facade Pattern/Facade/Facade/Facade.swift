@@ -1,52 +1,54 @@
 import Foundation
 
 enum TreasureTypes {
-    case SHIP; case BURIED; case SUNKEN
+    case ship
+    case buried
+    case sunken
 }
 
 class PirateFacade {
-    let map = TreasureMap()
-    let ship = PirateShip()
+    private let map = TreasureMap()
+    private let ship = PirateShip()
     let crew = PirateCrew()
 
     func getTreasure(type: TreasureTypes) -> Int? {
         var prizeAmount: Int?
 
         // select the treasure type
-        var treasureMapType: TreasureMap.Treasures
-        var crewWorkType: PirateCrew.Actions
+        var treasuareMap: TreasureMap.Treasures
+        var crewWork: PirateCrew.Actions
 
         switch type {
-        case .SHIP:
-            treasureMapType = TreasureMap.Treasures.GALLEON
-            crewWorkType = PirateCrew.Actions.ATTACK_SHIP
-        case .BURIED:
-            treasureMapType = TreasureMap.Treasures.BURIED_GOLD
-            crewWorkType = PirateCrew.Actions.DIG_FOR_GOLD
-        case .SUNKEN:
-            treasureMapType = TreasureMap.Treasures.SUNKEN_JEWELS
-            crewWorkType = PirateCrew.Actions.DIVE_FOR_JEWELS
+        case .ship:
+            treasuareMap = .galleon
+            crewWork = .attackShip
+        case .buried:
+            treasuareMap = .buriedGold
+            crewWork = .digForGold
+        case .sunken:
+            treasuareMap = .sunkenJewels
+            crewWork = .diveForJewels
         }
 
-        let treasureLocation = map.findTreasure(treasureMapType)
+        let treasureLocation = map.findTreasure(type: treasuareMap)
 
         // convert from map to ship coordinates
         let sequence: [Character] = ["A", "B", "C", "D", "E", "F", "G"]
-        let eastWestPos = find(sequence, treasureLocation.gridLetter)
-        let shipTarget = PirateShip.ShipLocation(NorthSouth:
-            Int(treasureLocation.gridNumber), EastWest: eastWestPos!)
+        let eastWestPos = sequence.firstIndex (where: {$0 == treasureLocation.gridLetter})
+        let shipTarget = PirateShip.ShipLocation(northSouth:
+            Int(treasureLocation.gridNumber), eastWest: eastWestPos!)
 
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
 
         // relocate ship
-        ship.moveToLocation(shipTarget, callback: { _ in
-            self.crew.performAction(crewWorkType) { prize in
+        ship.moveToLocation(location: shipTarget, callback: { _ in
+            self.crew.perform(action: crewWork) { prize in
                 prizeAmount = prize
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         })
 
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait()
         return prizeAmount
     }
 }

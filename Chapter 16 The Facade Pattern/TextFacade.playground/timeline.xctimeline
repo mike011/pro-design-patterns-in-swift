@@ -3,7 +3,9 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "#CharacterRangeLen=8&amp;CharacterRangeLoc=173&amp;EndingColumnNumber=9&amp;EndingLineNumber=6&amp;StartingColumnNumber=1&amp;StartingLineNumber=6&amp;Timestamp=435610506.916441">
+         documentLocation = "file:///Users/michael/Documents/git/pro-design-patterns-in-swift/Chapter%2016%20The%20Facade%20Pattern/TextFacade.playground#CharacterRangeLen=5&amp;CharacterRangeLoc=249&amp;EndingColumnNumber=0&amp;EndingLineNumber=8&amp;StartingColumnNumber=38&amp;StartingLineNumber=7&amp;Timestamp=658837283.636013"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
    </TimelineItems>
 </Timeline>

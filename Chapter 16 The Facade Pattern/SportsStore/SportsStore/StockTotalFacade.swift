@@ -13,10 +13,10 @@ class StockTotalFacade {
         case .USD:
             stfCurrency = StockTotalFactory.Currency.USD
         }
-        let factory = StockTotalFactory.getFactory(stfCurrency)
-        let totalAmount = factory.converter?.convertTotal(amount)
+        let factory = StockTotalFactory.getFactory(curr: stfCurrency)
+        let totalAmount = factory.converter?.convertTotal(total: amount)
         if totalAmount != nil {
-            let formattedValue = factory.formatter?.formatTotal(totalAmount!)
+            let formattedValue = factory.formatter?.formatTotal(total: totalAmount!)
             if formattedValue != nil {
                 return formattedValue!
             }

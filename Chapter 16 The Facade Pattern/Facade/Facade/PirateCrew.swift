@@ -1,21 +1,23 @@
 import Foundation
 
 class PirateCrew {
-    let workQueue = dispatch_queue_create("crewWorkQ", DISPATCH_QUEUE_SERIAL)
+    private let workQueue = DispatchQueue(label: "crewWorkQ")
 
     enum Actions {
-        case ATTACK_SHIP; case DIG_FOR_GOLD; case DIVE_FOR_JEWELS
+        case attackShip
+        case digForGold
+        case diveForJewels
     }
 
-    func performAction(action: Actions, callback: (Int) -> Void) {
-        dispatch_async(workQueue) { () in
+    func perform(action: Actions, callback: @escaping (Int) -> Void) {
+        workQueue.async {
             var prizeValue = 0
             switch action {
-            case .ATTACK_SHIP:
+            case .attackShip:
                 prizeValue = 10000
-            case .DIG_FOR_GOLD:
+            case .digForGold:
                 prizeValue = 5000
-            case .DIVE_FOR_JEWELS:
+            case .diveForJewels:
                 prizeValue = 1000
             }
             callback(prizeValue)

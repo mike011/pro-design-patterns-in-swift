@@ -1,6 +1,8 @@
 class TreasureMap {
     enum Treasures {
-        case GALLEON; case BURIED_GOLD; case SUNKEN_JEWELS
+        case galleon
+        case buriedGold;
+        case sunkenJewels
     }
 
     struct MapLocation {
@@ -10,11 +12,11 @@ class TreasureMap {
 
     func findTreasure(type: Treasures) -> MapLocation {
         switch type {
-        case .GALLEON:
+        case .galleon:
             return MapLocation(gridLetter: "D", gridNumber: 6)
-        case .BURIED_GOLD:
+        case .buriedGold:
             return MapLocation(gridLetter: "C", gridNumber: 2)
-        case .SUNKEN_JEWELS:
+        case .sunkenJewels:
             return MapLocation(gridLetter: "F", gridNumber: 12)
         }
     }
