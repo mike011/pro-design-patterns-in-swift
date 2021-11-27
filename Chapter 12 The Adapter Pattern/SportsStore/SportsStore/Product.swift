@@ -1,12 +1,13 @@
 import Foundation
 
 class Product: NSObject, NSCopying {
+
     private(set) var name: String
     private(set) var productDescription: String
     private(set) var category: String
     private var stockLevelBackingValue: Int = 0
     private var priceBackingValue: Double = 0
-    private var salesTaxRate: Double = 0.2
+    fileprivate var salesTaxRate: Double = 0.2
 
     required init(name: String, description: String, category: String, price: Double,
                   stockLevel: Int)
@@ -33,7 +34,7 @@ class Product: NSObject, NSCopying {
         return (price * (1 + salesTaxRate)) * Double(stockLevel)
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Product(name: name, description: description,
                        category: category, price: price,
                        stockLevel: stockLevel)
@@ -57,7 +58,7 @@ class Product: NSObject, NSCopying {
             productType = Product.self
         }
 
-        return productType(name: name, description: description, category: category,
+        return productType.init(name: name, description: description, category: category,
                            price: price, stockLevel: stockLevel)
     }
 }

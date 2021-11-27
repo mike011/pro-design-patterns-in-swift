@@ -6,27 +6,29 @@ class NewCoDirectoryAdapter: EmployeeDataSource {
     }
 
     var employees: [Employee] {
-        return map(directory.getStaff().values) { sv -> Employee in
+        return directory.getStaff().values.map { sv -> Employee in
             Employee(name: sv.getName(), title: sv.getJob())
         }
     }
 
-    func searchByName(name: String) -> [Employee] {
+    func search(byName: String) -> [Employee] {
         return createEmployees(filter: { (sv: NewCoStaffMember) -> Bool in
-            sv.getName().rangeOfString(name) != nil
+            sv.getName().range(of: byName) != nil
         })
     }
 
-    func searchByTitle(title: String) -> [Employee] {
+    func search(byTitle: String) -> [Employee] {
         return createEmployees(filter: { (sv: NewCoStaffMember) -> Bool in
-            sv.getJob().rangeOfString(title) != nil
+            sv.getJob().range(of: byTitle) != nil
         })
     }
 
-    private func createEmployees(filter filterClosure: NewCoStaffMember -> Bool)
+    private func createEmployees(filter filterClosure: (NewCoStaffMember) -> Bool)
         -> [Employee]
     {
-        return map(filter(directory.getStaff().values, filterClosure)) { entry -> Employee in
+        return directory.getStaff().values.filter { newCoStaffMember in
+            filterClosure(newCoStaffMember)
+        }.map { entry in
             Employee(name: entry.getName(), title: entry.getJob())
         }
     }

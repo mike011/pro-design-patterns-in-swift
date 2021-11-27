@@ -5,6 +5,6 @@ struct Employee {
 
 protocol EmployeeDataSource {
     var employees: [Employee] { get }
-    func searchByName(name: String) -> [Employee]
-    func searchByTitle(title: String) -> [Employee]
+    func search(byName: String) -> [Employee]
+    func search(byTitle: String) -> [Employee]
 }

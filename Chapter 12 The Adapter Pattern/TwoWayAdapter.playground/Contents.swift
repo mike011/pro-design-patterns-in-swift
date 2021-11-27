@@ -32,9 +32,9 @@ class SketchComponent {
 
     func sketchShape() {
         if settings.sketchRoundedShapes {
-            println("Sketch Circle")
+            print("Sketch Circle")
         } else {
-            println("Sketch Square")
+            print("Sketch Square")
         }
     }
 }
@@ -48,7 +48,10 @@ class TwoWayAdapter: ShapeDrawer, AppSettings {
     }
 
     var sketchRoundedShapes: Bool {
-        return app?.cornerRadius > 0
+        if let app = app {
+            return app.cornerRadius > 0
+        }
+        return false
     }
 }
 

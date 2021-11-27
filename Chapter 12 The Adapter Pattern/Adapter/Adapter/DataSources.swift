@@ -3,19 +3,19 @@ import Foundation
 class DataSourceBase: EmployeeDataSource {
     var employees = [Employee]()
 
-    func searchByName(name: String) -> [Employee] {
+    func search(byName name: String) -> [Employee] {
         return search { e -> Bool in
-            e.name.rangeOfString(name) != nil
+            e.name.range(of: name) != nil
         }
     }
 
-    func searchByTitle(title: String) -> [Employee] {
+    func search(byTitle title: String) -> [Employee] {
         return search { e -> Bool in
-            e.title.rangeOfString(title) != nil
+            e.title.range(of: title) != nil
         }
     }
 
-    private func search(selector: Employee -> Bool) -> [Employee] {
+    private func search(bySelector selector: (Employee) -> Bool) -> [Employee] {
         var results = [Employee]()
         for e in employees {
             if selector(e) {

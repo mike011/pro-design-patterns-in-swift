@@ -1,6 +1,7 @@
 class SearchTool {
     enum SearchType {
-        case NAME; case TITLE
+        case name
+        case title
     }
 
     private let sources: [EmployeeDataSource]
@@ -19,10 +20,13 @@ class SearchTool {
 
     func search(text: String, type: SearchType) -> [Employee] {
         var results = [Employee]()
-
         for source in sources {
-            results += type == SearchType.NAME ? source.searchByName(text)
-                : source.searchByTitle(text)
+            switch type {
+            case .name:
+                results += source.search(byName: text)
+            case .title:
+                results += source.search(byTitle: text)
+            }
         }
         return results
     }
