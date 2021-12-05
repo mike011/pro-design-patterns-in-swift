@@ -1,11 +1,11 @@
 class SatelliteChannel: Channel {
-    func send(message: Message) {
+    override func send(message: Message) {
         print("Satellite: \(message.contentToSend)")
     }
 }
 
 class PriorityMessage: ClearMessage {
-    func send(message: Message) {
-        print("Important: \(message.contentToSend)")
+    override var contentToSend: String {
+        return "Important: \(super.contentToSend)"
     }
 }

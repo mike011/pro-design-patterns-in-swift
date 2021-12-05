@@ -11,7 +11,6 @@
 		667A1B6419F6DC4800060D1B /* Comms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A1B6319F6DC4800060D1B /* Comms.swift */; };
 		667A1B6619F6DC5D00060D1B /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A1B6519F6DC5D00060D1B /* Channel.swift */; };
 		667A1B6819F6DC9500060D1B /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A1B6719F6DC9500060D1B /* Messages.swift */; };
-		667A1B6A19F6DCC800060D1B /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A1B6919F6DCC800060D1B /* Bridge.swift */; };
 		667A1B6C19F6DCFF00060D1B /* NewFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A1B6B19F6DCFF00060D1B /* NewFeatures.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +32,6 @@
 		667A1B6319F6DC4800060D1B /* Comms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comms.swift; sourceTree = "<group>"; };
 		667A1B6519F6DC5D00060D1B /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		667A1B6719F6DC9500060D1B /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
-		667A1B6919F6DCC800060D1B /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
 		667A1B6B19F6DCFF00060D1B /* NewFeatures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewFeatures.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,7 +69,6 @@
 				667A1B6319F6DC4800060D1B /* Comms.swift */,
 				667A1B6519F6DC5D00060D1B /* Channel.swift */,
 				667A1B6719F6DC9500060D1B /* Messages.swift */,
-				667A1B6919F6DCC800060D1B /* Bridge.swift */,
 				667A1B6B19F6DCFF00060D1B /* NewFeatures.swift */,
 			);
 			path = Bridge;
@@ -111,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 667A1B5419F6DC3400060D1B /* Build configuration list for PBXProject "Bridge" */;
+			buildConfigurationList = 667A1B5419F6DC3400060D1B /* Build configuration list for PBXProject "CollapsedBridge" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -134,7 +131,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				667A1B6A19F6DCC800060D1B /* Bridge.swift in Sources */,
 				667A1B6619F6DC5D00060D1B /* Channel.swift in Sources */,
 				667A1B6819F6DC9500060D1B /* Messages.swift in Sources */,
 				667A1B5D19F6DC3400060D1B /* main.swift in Sources */,
@@ -268,7 +264,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		667A1B5419F6DC3400060D1B /* Build configuration list for PBXProject "Bridge" */ = {
+		667A1B5419F6DC3400060D1B /* Build configuration list for PBXProject "CollapsedBridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				667A1B5E19F6DC3400060D1B /* Debug */,
