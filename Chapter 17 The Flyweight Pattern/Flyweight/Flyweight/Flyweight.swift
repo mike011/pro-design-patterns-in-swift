@@ -25,18 +25,16 @@ class FlyweightFactory {
             static let singletonData = [Coordinate: Cell](
                 setupFunc: { () in
                     var results = [(Coordinate, Cell)]()
-                    let letters: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    var stringIndex = letters.startIndex
+                    let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     let rows = 50
-                    do {
+                    for stringIndex in letters.indices {
                         let colLetter = letters[stringIndex]
-                        stringIndex = stringIndex.successor()
                         for rowIndex in 1 ... rows {
                             let cell = Cell(col: colLetter, row: rowIndex,
                                             val: rowIndex)
                             results.append((cell.coordinate, cell))
                         }
-                    } while stringIndex != letters.endIndex
+                    }
                     return results
                 }
             )
@@ -48,18 +46,18 @@ class FlyweightFactory {
 class FlyweightImplementation: Flyweight {
     private let extrinsicData: [Coordinate: Cell]
     private var intrinsicData: [Coordinate: Cell]
-    private let queue: dispatch_queue_t
+    private let queue: DispatchQueue
 
-    private init(extrinsic: [Coordinate: Cell]) {
+    fileprivate init(extrinsic: [Coordinate: Cell]) {
         extrinsicData = extrinsic
         intrinsicData = [Coordinate: Cell]()
-        queue = dispatch_queue_create("dataQ", DISPATCH_QUEUE_CONCURRENT)
+        queue = DispatchQueue.init(label: "dataQ", attributes: .concurrent)
     }
 
     subscript(key: Coordinate) -> Int? {
         get {
             var result: Int?
-            dispatch_sync(queue) { () in
+            queue.sync() { () in
                 if let cell = self.intrinsicData[key] {
                     result = cell.value
                 } else {
@@ -70,7 +68,7 @@ class FlyweightImplementation: Flyweight {
         }
         set(value) {
             if value != nil {
-                dispatch_barrier_sync(queue) { () in
+                queue.async(flags: .barrier) { () in
                     self.intrinsicData[key] = Cell(col: key.col,
                                                    row: key.row, val: value!)
                 }
@@ -80,8 +78,8 @@ class FlyweightImplementation: Flyweight {
 
     var total: Int {
         var result = 0
-        dispatch_sync(queue) { () in
-            result = reduce(self.extrinsicData.values, 0) { total, cell in
+        queue.sync() { () in
+            result = self.extrinsicData.values.reduce(0) { total, cell in
                 if let intrinsicCell = self.intrinsicData[cell.coordinate] {
                     return total + intrinsicCell.value
                 } else {
@@ -94,7 +92,7 @@ class FlyweightImplementation: Flyweight {
 
     var count: Int {
         var result = 0
-        dispatch_sync(queue) { () in
+        queue.sync() { () in
             result = self.intrinsicData.count
         }
         return result

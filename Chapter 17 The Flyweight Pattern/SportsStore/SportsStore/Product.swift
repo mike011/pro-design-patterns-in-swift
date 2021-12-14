@@ -1,6 +1,7 @@
 import Foundation
 
 class Product: NSObject, NSCopying {
+
     private(set) var name: String
     private(set) var productDescription: String
     private(set) var category: String
@@ -32,7 +33,7 @@ class Product: NSObject, NSCopying {
         return price * Double(stockLevel)
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Product(name: name, description: description,
                        category: category, price: price,
                        stockLevel: stockLevel)
@@ -64,7 +65,7 @@ class ProductComposite: Product {
     }
 
     override var price: Double {
-        get { return reduce(products, 0) { total, p in total + p.price } }
+        get { return products.reduce(0, { total, p in total + p.price }) }
         set { /* do nothing */ }
     }
 }

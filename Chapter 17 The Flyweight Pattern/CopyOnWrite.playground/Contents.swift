@@ -1,6 +1,7 @@
 import Foundation
 
 class Owner: NSObject, NSCopying {
+
     var name: String
     var city: String
 
@@ -8,8 +9,8 @@ class Owner: NSObject, NSCopying {
         self.name = name; self.city = city
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
-        println("Copy")
+    func copy(with zone: NSZone? = nil) -> Any {
+        print("Copy")
         return Owner(name: name, city: city)
     }
 }
@@ -57,7 +58,7 @@ class Flyweight {
 
     private func decoupleFromExtrinsic() {
         if intrinsicOwner == nil {
-            intrinsicOwner = extrinsicOwner.copyWithZone(nil) as? Owner
+            intrinsicOwner = extrinsicOwner.copy(with: nil) as? Owner
         }
     }
 }

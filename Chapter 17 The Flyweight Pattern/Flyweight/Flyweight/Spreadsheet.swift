@@ -2,7 +2,7 @@ func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
     return lhs.col == rhs.col && lhs.row == rhs.row
 }
 
-class Coordinate: Hashable, Printable {
+class Coordinate: Hashable, CustomStringConvertible {
     let col: Character
     let row: Int
 
@@ -10,8 +10,8 @@ class Coordinate: Hashable, Printable {
         self.col = col; self.row = row
     }
 
-    var hashValue: Int {
-        return description.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(description.hashValue)
     }
 
     var description: String {

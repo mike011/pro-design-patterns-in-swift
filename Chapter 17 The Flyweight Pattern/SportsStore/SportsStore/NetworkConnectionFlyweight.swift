@@ -5,7 +5,7 @@ protocol NetConnFlyweight {
 class NetConnFlyweightImpl: NetConnFlyweight {
     private let extrinsicData: [String: Int]
 
-    private init(data: [String: Int]) {
+    fileprivate init(data: [String: Int]) {
         extrinsicData = data
     }
 
@@ -21,10 +21,15 @@ class NetConnFlyweightFactory {
 
     private class var stockData: [String: Int] {
         enum singletonWrapper {
-            static let singleton = ["Kayak": 10, "Lifejacket": 14,
-                                    "Soccer Ball": 32, "Corner Flags": 1, "Stadium": 4,
-                                    "Thinking Cap": 8, "Unsteady Chair": 3,
-                                    "Human Chess Board": 2, "Bling-Bling King": 4]
+            static let singleton = ["Kayak": 10,
+                                    "Lifejacket": 14,
+                                    "Soccer Ball": 32,
+                                    "Corner Flags": 1,
+                                    "Stadium": 4,
+                                    "Thinking Cap": 8,
+                                    "Unsteady Chair": 3,
+                                    "Human Chess Board": 2,
+                                    "Bling-Bling King": 4]
         }
         return singletonWrapper.singleton
     }
