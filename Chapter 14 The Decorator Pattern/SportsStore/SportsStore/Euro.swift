@@ -1,7 +1,7 @@
 class EuroHandler {
     func getDisplayString(amount: Double) -> String {
-        let formatted = Utils.currencyStringFromNumber(amount)
-        return "€\(dropFirst(formatted))"
+        let formatted = Utils.currencyStringFromNumber(number: amount)
+        return "€\(formatted.dropFirst())"
     }
 
     func getCurrencyAmount(amount: Double) -> Double {

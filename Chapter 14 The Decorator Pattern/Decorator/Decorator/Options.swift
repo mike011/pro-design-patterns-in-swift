@@ -1,14 +1,14 @@
 class GiftOptionDecorator: Purchase {
     private let wrappedPurchase: Purchase
-    private let options: [OPTION]
+    private let options: [Option]
 
-    enum OPTION {
-        case GIFTWRAP
-        case RIBBON
-        case DELIVERY
+    enum Option {
+        case giftWrap
+        case ribbon
+        case delivery
     }
 
-    init(purchase: Purchase, options: OPTION...) {
+    init(purchase: Purchase, options: Option...) {
         wrappedPurchase = purchase
         self.options = options
         super.init(product: purchase.description, price: purchase.totalPrice)
@@ -18,11 +18,11 @@ class GiftOptionDecorator: Purchase {
         var result = wrappedPurchase.description
         for option in options {
             switch option {
-            case .GIFTWRAP:
+            case .giftWrap:
                 result = "\(result) + giftwrap"
-            case .RIBBON:
+            case .ribbon:
                 result = "\(result) + ribbon"
-            case .DELIVERY:
+            case .delivery:
                 result = "\(result) + delivery"
             }
         }
@@ -33,11 +33,11 @@ class GiftOptionDecorator: Purchase {
         var result = wrappedPurchase.totalPrice
         for option in options {
             switch option {
-            case .GIFTWRAP:
+            case .giftWrap:
                 result += 2
-            case .RIBBON:
+            case .ribbon:
                 result += 1
-            case .DELIVERY:
+            case .delivery:
                 result += 5
             }
         }

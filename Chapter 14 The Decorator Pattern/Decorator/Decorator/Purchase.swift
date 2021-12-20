@@ -1,4 +1,4 @@
-class Purchase: Printable {
+class Purchase: CustomStringConvertible {
     private let product: String
     private let price: Float
 

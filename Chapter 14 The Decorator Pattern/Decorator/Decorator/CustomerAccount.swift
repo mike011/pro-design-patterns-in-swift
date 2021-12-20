@@ -1,6 +1,8 @@
 import Foundation
 
-class CustomerAccount {
+class CustomerAccount: CustomStringConvertible {
+
+
     let customerName: String
     var purchases = [Purchase]()
 
@@ -12,18 +14,20 @@ class CustomerAccount {
         purchases.append(purchase)
     }
 
-    func printAccount() {
+    var description: String {
+        var result = ""
         var total: Float = 0
         for p in purchases {
             total += p.totalPrice
-            println("Purchase \(p), Price \(formatCurrencyString(p.totalPrice))")
+            result += "Purchase \(p), Price \(formatCurrencyString(number: p.totalPrice))\n"
         }
-        println("Total due: \(formatCurrencyString(total))")
+        result += "Total due: \(formatCurrencyString(number: total))"
+        return result
     }
 
     func formatCurrencyString(number: Float) -> String {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
-        return formatter.stringFromNumber(number) ?? ""
+        let formatter = NumberFormatter()
+        formatter.numberStyle = NumberFormatter.Style.currency
+        return formatter.string(from: NSNumber(value: number)) ?? ""
     }
 }
