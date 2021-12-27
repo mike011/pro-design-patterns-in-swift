@@ -10,18 +10,18 @@ class CustomerOrder {
     }
 
     var totalPrice: Float {
-        return reduce(parts, 0) { subtotal, part in
+        return parts.reduce(0) { subtotal, part in
             subtotal + part.price
         }
     }
 
     func printDetails() {
-        println("Order for \(customer): Cost: \(formatCurrencyString(totalPrice))")
+        print("Order for \(customer): Cost: \(formatCurrencyString(number: totalPrice))")
     }
 
     func formatCurrencyString(number: Float) -> String {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = NSNumberFormatterStyle.CurrencyStyle
-        return formatter.stringFromNumber(number) ?? ""
+        let formatter = NumberFormatter()
+        formatter.numberStyle = NumberFormatter.Style.currency
+        return formatter.string(from: NSNumber(value: number)) ?? ""
     }
 }

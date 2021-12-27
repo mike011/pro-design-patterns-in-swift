@@ -32,7 +32,7 @@ class CompositePart: CarPart {
     }
 
     var price: Float {
-        return reduce(parts, 0) { subtotal, part in
+        return parts.reduce(0) { subtotal, part in
             subtotal + part.price
         }
     }
@@ -44,7 +44,7 @@ class CompositePart: CarPart {
     func removePart(part: CarPart) {
         for index in 0 ..< parts.count {
             if parts[index].name == part.name {
-                parts.removeAtIndex(index)
+                parts.remove(at: index)
                 break
             }
         }

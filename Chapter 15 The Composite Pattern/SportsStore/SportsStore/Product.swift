@@ -1,11 +1,13 @@
 import Foundation
 
 class Product: NSObject, NSCopying {
+
     private(set) var name: String
     private(set) var productDescription: String
     private(set) var category: String
     private var stockLevelBackingValue: Int = 0
     private var priceBackingValue: Double = 0
+    fileprivate var salesTaxRate: Double = 0.2
 
     required init(name: String, description: String, category: String, price: Double,
                   stockLevel: Int)
@@ -29,42 +31,83 @@ class Product: NSObject, NSCopying {
     }
 
     var stockValue: Double {
-        return price * Double(stockLevel)
+        return (price * (1 + salesTaxRate)) * Double(stockLevel)
     }
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return Product(name: name, description: description,
                        category: category, price: price,
                        stockLevel: stockLevel)
     }
 
+    var upsells: [UpsellOpportunities] {
+        return Array()
+    }
+
     class func createProduct(name: String, description: String, category: String,
                              price: Double, stockLevel: Int) -> Product
     {
-        return Product(name: name, description: description, category: category,
-                       price: price, stockLevel: stockLevel)
+        var productType: Product.Type
+
+        switch category {
+        case "Watersports":
+            productType = WatersportsProduct.self
+        case "Soccer":
+            productType = SoccerProduct.self
+        default:
+            productType = Product.self
+        }
+
+        return productType.init(name: name, description: description, category: category,
+                           price: price, stockLevel: stockLevel)
     }
 }
 
-class ProductComposite: Product {
-    private let products: [Product]
-
-    required init(name _: String, description _: String, category _: String,
-                  price _: Double, stockLevel _: Int)
-    {
+class ProductComposite : Product {
+    private let products: [Product];
+    required init(name: String, description: String, category: String, price: Double, stockLevel: Int) {
         fatalError("Not implemented")
     }
-
-    init(name: String, description: String, category: String, stockLevel: Int,
-         products: Product...)
-    {
+    init(name: String, description: String, category: String, stockLevel: Int, products: Product...) {
         self.products = products
+        super.init(name: name, description: description, category: category, price: 0, stockLevel: stockLevel);
+    }
+    override var price: Double {
+        get { return products.reduce(0) {total, p in return total + p.price} }
+        set { /* do nothing */ }
+    }
+}
+
+enum UpsellOpportunities {
+    case SwimmingLessons
+    case MapOfLakes
+    case SoccerVideos
+}
+
+class WatersportsProduct: Product {
+    required init(name: String, description: String, category: String,
+                  price: Double, stockLevel: Int)
+    {
         super.init(name: name, description: description, category: category,
-                   price: 0, stockLevel: stockLevel)
+                   price: price, stockLevel: stockLevel)
+        salesTaxRate = 0.10
     }
 
-    override var price: Double {
-        get { return reduce(products, 0) { total, p in total + p.price } }
-        set { /* do nothing */ }
+    override var upsells: [UpsellOpportunities] {
+        return [UpsellOpportunities.SwimmingLessons, UpsellOpportunities.MapOfLakes]
+    }
+}
+
+class SoccerProduct: Product {
+    required init(name: String, description: String, category: String,
+                  price: Double, stockLevel: Int)
+    {
+        super.init(name: name, description: description, category: category,
+                   price: price, stockLevel: stockLevel)
+        salesTaxRate = 0.25
+    }
+
+    override var upsells: [UpsellOpportunities] {
+        return [UpsellOpportunities.SoccerVideos]
     }
 }
