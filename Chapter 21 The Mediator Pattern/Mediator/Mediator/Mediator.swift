@@ -14,27 +14,27 @@ protocol Mediator {
 
 class AirplaneMediator: Mediator {
     private var peers: [String: Peer]
-    private let queue = dispatch_queue_create("dictQ", DISPATCH_QUEUE_CONCURRENT)
+    private let queue = DispatchQueue(label: "posQ",attributes: .concurrent)
 
     init() {
         peers = [String: Peer]()
     }
 
     func registerPeer(peer: Peer) {
-        dispatch_barrier_sync(queue) { () in
+        queue.sync(flags: .barrier) { () in
             self.peers[peer.name] = peer
         }
     }
 
     func unregisterPeer(peer: Peer) {
-        dispatch_barrier_sync(queue) { () in
-            let removed = self.peers.removeValueForKey(peer.name)
+        queue.sync(flags: .barrier) { () in
+            _ = self.peers.removeValue(forKey: peer.name)
         }
     }
 
     func changePosition(peer: Peer, pos: Position) -> Bool {
         var result = false
-        dispatch_sync(queue) { () in
+        queue.sync() { () in
 
             let closerPeers = self.peers.values.filter { p in
                 p.currentPosition.distanceFromRunway
@@ -43,7 +43,7 @@ class AirplaneMediator: Mediator {
 
             for storedPeer in closerPeers {
                 if peer.name != storedPeer.name,
-                   storedPeer.otherPlaneDidChangePosition(pos)
+                   storedPeer.otherPlaneDidChangePosition(position: pos)
                 {
                     result = true
                 }

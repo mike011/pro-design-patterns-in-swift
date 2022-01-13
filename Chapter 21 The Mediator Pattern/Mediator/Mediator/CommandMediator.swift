@@ -3,9 +3,9 @@ protocol CommandPeer {
 }
 
 class Command {
-    let function: CommandPeer -> Any
+    let function: (CommandPeer) -> Any
 
-    init(function: CommandPeer -> Any) {
+    init(function: @escaping (CommandPeer) -> Any) {
         self.function = function
     }
 
@@ -22,14 +22,14 @@ class CommandMediator {
     }
 
     func unregisterPeer(peer: CommandPeer) {
-        peers.removeValueForKey(peer.name)
+        peers.removeValue(forKey: peer.name)
     }
 
     func dispatchCommand(caller: CommandPeer, command: Command) -> [Any] {
         var results = [Any]()
         for peer in peers.values {
             if peer.name != caller.name {
-                results.append(command.execute(peer))
+                results.append(command.execute(peer: peer))
             }
         }
         return results

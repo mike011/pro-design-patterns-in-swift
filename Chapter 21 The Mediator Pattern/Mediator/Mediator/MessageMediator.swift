@@ -11,15 +11,13 @@ class MessageMediator {
     }
 
     func unregisterPeer(peer: MessagePeer) {
-        peers.removeValueForKey(peer.name)
+        peers.removeValue(forKey: peer.name)
     }
 
     func sendMessage(caller: MessagePeer, messageType: String, data: Any) -> [Any?] {
         var results = [Any?]()
-        for peer in peers.values {
-            if peer.name != caller.name {
-                results.append(peer.handleMessage(messageType, data: data))
-            }
+        for peer in peers.values where peer.name != caller.name {
+            results.append(peer.handleMessage(messageType: messageType, data: data))
         }
         return results
     }

@@ -7,15 +7,15 @@ struct Position {
 
 class Airplane: MessagePeer {
     var name: String
-    var currentPosition: Position
-    var mediator: MessageMediator
-    let queue = dispatch_queue_create("posQ", DISPATCH_QUEUE_CONCURRENT)
+    private var currentPosition: Position
+    private var mediator: MessageMediator
+    private let queue = DispatchQueue(label: "posQ", attributes: .concurrent)
 
-    init(name: String, initialPos: Position, mediator: MessageMediator) {
+    init(name: String, initialPosition: Position, mediator: MessageMediator) {
         self.name = name
-        currentPosition = initialPos
+        currentPosition = initialPosition
         self.mediator = mediator
-        mediator.registerPeer(self)
+        mediator.registerPeer(peer: self)
     }
 
     func handleMessage(messageType: String, data: Any?) -> Any? {
@@ -23,7 +23,7 @@ class Airplane: MessagePeer {
         switch messageType {
         case "changePos":
             if let pos = data as? Position {
-                result = otherPlaneDidChangePosition(pos)
+                result = otherPlaneDidChangePosition(position: pos)
             }
         default:
             fatalError("Unknown message type")
@@ -33,7 +33,7 @@ class Airplane: MessagePeer {
 
     func otherPlaneDidChangePosition(position: Position) -> Bool {
         var result = false
-        dispatch_sync(queue) { () in
+        queue.sync() { () in
             result = position.distanceFromRunway
                 == self.currentPosition.distanceFromRunway
                 && abs(position.height - self.currentPosition.height) < 1000
@@ -42,26 +42,26 @@ class Airplane: MessagePeer {
     }
 
     func changePosition(newPosition: Position) {
-        dispatch_barrier_sync(queue) { () in
+        queue.sync(flags: .barrier) { () in
             self.currentPosition = newPosition
 
-            let allResults = self.mediator.sendMessage(self,
+            let allResults = self.mediator.sendMessage(caller: self,
                                                        messageType: "changePos", data: newPosition)
             for result in allResults {
                 if result as? Bool == true {
-                    println("\(self.name): Too close! Abort!")
+                    print("\(self.name): Too close! Abort!")
                     return
                 }
             }
-            println("\(self.name): Position changed")
+            print("\(self.name): Position changed")
         }
     }
 
     func land() {
-        dispatch_barrier_sync(queue) { () in
+        queue.sync(flags: .barrier) { () in
             self.currentPosition = Position(distanceFromRunway: 0, height: 0)
-            self.mediator.unregisterPeer(self)
-            println("\(self.name): Landed")
+            self.mediator.unregisterPeer(peer: self)
+            print("\(self.name): Landed")
         }
     }
 }
