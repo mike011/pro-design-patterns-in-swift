@@ -1,10 +1,16 @@
 let ledger = Ledger()
 
-ledger.addEntry("Bob", amount: 100.43)
-ledger.addEntry("Joe", amount: 200.20)
+ledger.addEntry(counterParty: "Bob", amount: 100.43)
+ledger.addEntry(counterParty: "Joe", amount: 200.20)
+
 
 let memento = ledger.createMemento()
 
-ledger.applyMemento(memento)
+ledger.addEntry(counterParty: "Alice", amount: 500)
+ledger.addEntry(counterParty: "Tony", amount: 20)
+
+ledger.printEntries()
+
+ledger.applyMemento(memento: memento)
 
 ledger.printEntries()

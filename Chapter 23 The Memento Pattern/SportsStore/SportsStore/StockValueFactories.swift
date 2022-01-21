@@ -7,8 +7,8 @@ class StockTotalFactory {
         case EUR
     }
 
-    private(set) var formatter: StockValueFormatter?
-    private(set) var converter: StockValueConverter?
+    fileprivate(set) var formatter: StockValueFormatter?
+    fileprivate(set) var converter: StockValueConverter?
 
     class func getFactory(curr: Currency) -> StockTotalFactory {
         if curr == Currency.USD {
@@ -64,11 +64,11 @@ class EuroHandlerAdapter: StockTotalFactory,
     }
 
     func formatTotal(total: Double) -> String {
-        return handler.getDisplayString(total)
+        return handler.getDisplayString(amount: total)
     }
 
     func convertTotal(total: Double) -> Double {
-        return handler.getCurrencyAmount(total)
+        return handler.getCurrencyAmount(amount: total)
     }
 
     class var sharedInstance: EuroHandlerAdapter {

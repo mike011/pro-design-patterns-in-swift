@@ -19,16 +19,16 @@ class StockServerFactory {
 class StockServerProxy: StockServer {
     func getStockLevel(product: String, callback: (String, Int) -> Void) {
         let stockConn = NetworkPool.getConnection()
-        let level = stockConn.getStockLevel(product)
+        let level = stockConn.getStockLevel(name: product)
         if level != nil {
             callback(product, level!)
         }
-        NetworkPool.returnConnecton(stockConn)
+        NetworkPool.returnConnecton(conn: stockConn)
     }
 
     func setStockLevel(product: String, stockLevel: Int) {
         let stockConn = NetworkPool.getConnection()
-        stockConn.setStockLevel(product, level: stockLevel)
-        NetworkPool.returnConnecton(stockConn)
+        stockConn.setStockLevel(name: product, level: stockLevel)
+        NetworkPool.returnConnecton(conn: stockConn)
     }
 }

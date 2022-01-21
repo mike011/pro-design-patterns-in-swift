@@ -6,7 +6,9 @@ class LedgerEntry {
     let amount: Float
 
     init(id: Int, counterParty: String, amount: Float) {
-        self.id = id; self.counterParty = counterParty; self.amount = amount
+        self.id = id
+        self.counterParty = counterParty
+        self.amount = amount
     }
 }
 
@@ -17,6 +19,7 @@ class LedgerMemento: Memento {
 }
 
 class Ledger: NSObject, Originator, NSCoding {
+
     private var entries = [Int: LedgerEntry]()
     private var nextId = 1
     var total: Float = 0
@@ -27,43 +30,43 @@ class Ledger: NSObject, Originator, NSCoding {
     }
 
     required init(coder aDecoder: NSCoder) {
-        total = aDecoder.decodeFloatForKey("total")
-        nextId = aDecoder.decodeIntegerForKey("nextId")
-        entries.removeAll(keepCapacity: true)
-        if let entryArray = aDecoder.decodeDataObject()
+        total = aDecoder.decodeFloat(forKey: "total")
+        nextId = aDecoder.decodeInteger(forKey: "nextId")
+        entries.removeAll(keepingCapacity: true)
+        if let entryArray = aDecoder.decodeData()
             as AnyObject? as? [NSDictionary]
         {
             for entryDict in entryArray {
-                let id = entryDict["id"] as Int
-                let counterParty = entryDict["counterParty"] as String
-                let amount = entryDict["amount"] as Float
+                let id = entryDict["id"] as! Int
+                let counterParty = entryDict["counterParty"] as! String
+                let amount = entryDict["amount"] as! Float
                 entries[id] = LedgerEntry(id: id, counterParty: counterParty,
                                           amount: amount)
             }
         }
     }
 
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeFloat(total, forKey: "total")
-        aCoder.encodeInteger(nextId, forKey: "nextId")
+    func encode(with coder: NSCoder) {
+        coder.encode(total, forKey: "total")
+        coder.encode(nextId, forKey: "nextId")
         var entriesArray = [NSMutableDictionary]()
         for entry in entries.values {
-            var dict = NSMutableDictionary()
+            let dict = NSMutableDictionary()
             dict["id"] = entry.id
             dict["counterParty"] = entry.counterParty
             dict["amount"] = entry.amount
             entriesArray.append(dict)
         }
-        aCoder.encodeObject(entriesArray)
+        coder.encode(entriesArray)
     }
 
     func createMemento() -> Memento {
-        return LedgerMemento(data: NSKeyedArchiver.archivedDataWithRootObject(self))
+        return LedgerMemento(data: NSKeyedArchiver.archivedData(withRootObject: self) as NSData)
     }
 
     func applyMemento(memento: Memento) {
-        if let lmemento = memento as? LedgerMemento {
-            if let obj = NSKeyedUnarchiver.unarchiveObjectWithData(lmemento.data)
+        if let memento = memento as? LedgerMemento {
+            if let obj = NSKeyedUnarchiver.unarchiveObject(with: memento.data as Data)
                 as? Ledger
             {
                 total = obj.total
@@ -74,19 +77,19 @@ class Ledger: NSObject, Originator, NSCoding {
     }
 
     func addEntry(counterParty: String, amount: Float) {
-        let entry = LedgerEntry(id: nextId++, counterParty: counterParty,
-                                amount: amount)
+        let entry = LedgerEntry(id: nextId, counterParty: counterParty, amount: amount)
+        nextId += 1
         entries[entry.id] = entry
         total += amount
     }
 
     func printEntries() {
-        for id in entries.keys.array.sorted(<) {
+        for id in entries.keys.sorted(by: <) {
             if let entry = entries[id] {
-                println("#\(id): \(entry.counterParty) $\(entry.amount)")
+                print("#\(id): \(entry.counterParty) $\(entry.amount)")
             }
         }
-        println("Total: $\(total)")
-        println("----")
+        print("Total: $\(total)")
+        print("----")
     }
 }

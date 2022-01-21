@@ -8,11 +8,11 @@ class NetworkConnection {
     }
 
     func getStockLevel(name: String) -> Int? {
-        NSThread.sleepForTimeInterval(Double(rand() % 2))
-        return flyweight.getStockLevel(name)
+        Thread.sleep(forTimeInterval: Double(arc4random() % 2))
+        return flyweight.getStockLevel(name: name)
     }
 
     func setStockLevel(name: String, level: Int) {
-        println("Stock update: \(name) = \(level)")
+        print("Stock update: \(name) = \(level)")
     }
 }
