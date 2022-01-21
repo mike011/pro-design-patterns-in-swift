@@ -65,15 +65,12 @@ class Ledger: NSObject, Originator, NSCoding {
     }
 
     func applyMemento(memento: Memento) {
-        if let memento = memento as? LedgerMemento {
-            if let obj = NSKeyedUnarchiver.unarchiveObject(with: memento.data as Data)
-                as? Ledger
-            {
-                total = obj.total
-                nextId = obj.nextId
-                entries = obj.entries
-            }
-        }
+        guard let memento = memento as? LedgerMemento,
+              let obj = NSKeyedUnarchiver.unarchiveObject(with: memento.data as Data)
+                as? Ledger else { return }
+        total = obj.total
+        nextId = obj.nextId
+        entries = obj.entries
     }
 
     func addEntry(counterParty: String, amount: Float) {
