@@ -5,7 +5,7 @@ protocol NetConnFlyweight {
 class NetConnFlyweightImpl: NetConnFlyweight {
     private let extrinsicData: [String: Int]
 
-    private init(data: [String: Int]) {
+    fileprivate init(data: [String: Int]) {
         extrinsicData = data
     }
 

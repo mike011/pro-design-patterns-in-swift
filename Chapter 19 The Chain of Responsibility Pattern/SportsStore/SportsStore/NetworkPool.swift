@@ -3,33 +3,33 @@ import Foundation
 final class NetworkPool {
     private let connectionCount = 3
     private var connections = [NetworkConnection]()
-    private var semaphore: dispatch_semaphore_t
-    private var queue: dispatch_queue_t
+    private var semaphore: DispatchSemaphore
+    private var queue: DispatchQueue
     private var itemsCreated = 0
 
     private init() {
-        semaphore = dispatch_semaphore_create(connectionCount)
-        queue = dispatch_queue_create("networkpoolQ", DISPATCH_QUEUE_SERIAL)
+        semaphore = DispatchSemaphore(value: connectionCount)
+        queue = DispatchQueue(label: "networkpoolQ")
     }
 
     private func doGetConnection() -> NetworkConnection {
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait()
         var result: NetworkConnection?
-        dispatch_sync(queue) { () in
+        queue.sync() { () in
             if self.connections.count > 0 {
-                result = self.connections.removeAtIndex(0)
+                result = self.connections.remove(at: 0)
             } else if self.itemsCreated < self.connectionCount {
                 result = NetworkConnection()
-                self.itemsCreated++
+                self.itemsCreated += 1
             }
         }
         return result!
     }
 
     private func doReturnConnection(conn: NetworkConnection) {
-        dispatch_async(queue) { () in
+        queue.async() { () in
             self.connections.append(conn)
-            dispatch_semaphore_signal(self.semaphore)
+            self.semaphore.signal()
         }
     }
 
@@ -38,7 +38,7 @@ final class NetworkPool {
     }
 
     class func returnConnecton(conn: NetworkConnection) {
-        sharedInstance.doReturnConnection(conn)
+        sharedInstance.doReturnConnection(conn: conn)
     }
 
     private class var sharedInstance: NetworkPool {

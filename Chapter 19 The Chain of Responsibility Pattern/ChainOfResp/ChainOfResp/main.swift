@@ -7,9 +7,10 @@ let messages = [
             subject: "Priority: All-Hands Meeting"),
 ]
 
-if let chain = Transmitter.createChain(true) {
+if let chain = Transmitter.createChain(localOnly: true) {
     for msg in messages {
-        let handled = chain.sendMessage(msg)
-        println("Message sent: \(handled)")
+        var wasHandled = false
+        let handled = chain.sendMessage(message: msg, handled: &wasHandled)
+        print("Message sent: \(handled)")
     }
 }
