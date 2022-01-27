@@ -1,9 +1,9 @@
 class MyClass {
     func writeHello() {
-        println("Hello!")
+        print("Hello!")
     }
 
     private func writePassword() {
-        println("secret")
+        print("secret")
     }
 }
