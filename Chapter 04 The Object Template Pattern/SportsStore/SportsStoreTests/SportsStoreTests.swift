@@ -11,7 +11,6 @@ import Testing
 struct SportsStoreTests {
 
     @Test func example() {
-        // This is an example of a functional test case.
         #expect(true, "Pass")
     }
 }

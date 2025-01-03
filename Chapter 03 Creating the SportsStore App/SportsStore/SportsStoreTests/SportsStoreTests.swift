@@ -7,7 +7,6 @@
 //
 
 import Testing
-import XCTest
 
 struct SportsStoreTests {
 
