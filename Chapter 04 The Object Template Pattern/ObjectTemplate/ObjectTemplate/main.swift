@@ -10,7 +10,7 @@ func calculateStockValue(productsArray: [Product]) -> Double {
     }
 }
 
-println("Sales tax for Kayak: $\(products[0].calculateTax(0.2))")
-println("Total value of stock: $\(calculateStockValue(products))")
+print("Sales tax for Kayak: $\(products[0].calculateTax(rate: 0.2))")
+print("Total value of stock: $\(calculateStockValue(productsArray: products))")
 products[0].stock = -50
-println("Stock Level for Kayak: \(products[0].stock)")
+print("Stock Level for Kayak: \(products[0].stock)")
