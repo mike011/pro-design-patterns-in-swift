@@ -1,4 +1,5 @@
-class Book {
+@MainActor
+class Book: Sendable {
     let author: String
     let title: String
     let stockNumber: Int
