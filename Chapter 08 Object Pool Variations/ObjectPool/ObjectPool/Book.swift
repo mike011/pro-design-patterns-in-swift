@@ -1,4 +1,4 @@
-class Book {
+class Book: @unchecked Sendable {
     let author: String
     let title: String
     let stockNumber: Int

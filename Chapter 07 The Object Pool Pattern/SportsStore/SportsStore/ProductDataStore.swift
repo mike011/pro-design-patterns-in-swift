@@ -1,6 +1,6 @@
 import Foundation
 
-final class ProductDataStore {
+final class ProductDataStore: @unchecked Sendable {
     var callback: ((Product) -> Void)?
     private var networkQ: DispatchQueue
     private var uiQ: DispatchQueue
@@ -14,17 +14,19 @@ final class ProductDataStore {
     private func loadData() -> [Product] {
         for p in productData {
             networkQ.async() { () in
-                let stockConn = NetworkPool.getConnection()
-                let level = stockConn.getStockLevel(name: p.name)
-                if level != nil {
-                    p.stockLevel = level!
-                    self.uiQ.async() { () in
-                        if self.callback != nil {
-                            self.callback!(p)
+                MainActor.assumeIsolated {
+                    let stockConn = NetworkPool.getConnection()
+                    let level = stockConn.getStockLevel(name: p.name)
+                    if level != nil {
+                        p.stockLevel = level!
+                        self.uiQ.async() { () in
+                            if self.callback != nil {
+                                self.callback!(p)
+                            }
                         }
                     }
+                    NetworkPool.returnConnecton(conn: stockConn)
                 }
-                NetworkPool.returnConnecton(conn: stockConn)
             }
         }
         return productData

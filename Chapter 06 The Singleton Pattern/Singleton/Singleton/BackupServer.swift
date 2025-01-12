@@ -15,7 +15,7 @@ class DataItem {
     }
 }
 
-final class BackupServer {
+final class BackupServer: @unchecked Sendable {
     let name: String
     private var data = [DataItem]()
     private let arrayQ = DispatchQueue(label: "arrayQ")

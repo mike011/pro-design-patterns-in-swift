@@ -1,6 +1,6 @@
 import Foundation
 
-class Pool<T> {
+class Pool<T: Sendable> {
     private var data = [T]()
     private var arrayQ = DispatchQueue(label: "arrayQ")
     private let semaphore: DispatchSemaphore

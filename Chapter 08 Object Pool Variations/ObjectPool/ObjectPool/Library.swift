@@ -1,6 +1,6 @@
 import Foundation
 
-final class Library {
+final class Library: @unchecked Sendable {
     private var books: [Book]
     private let pool: Pool<Book>
 

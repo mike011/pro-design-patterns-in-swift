@@ -9,8 +9,8 @@ class ProductTableCell: UITableViewCell {
     var product: Product?
 }
 
-var handler = { (p: Product) in
-}
+//var handler = { (p: Product) in
+//}
 
 class ViewController: UIViewController, UITableViewDataSource {
 

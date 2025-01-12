@@ -4,7 +4,7 @@ let productLogger = Logger<Product>(callback: { p in
     print("Change: \(p.name) \(p.stockLevel) items in stock")
 })
 
-final class Logger<T> where T: NSObject, T: NSCopying {
+final class Logger<T: Sendable>: @unchecked Sendable where T: NSObject, T: NSCopying {
     var dataItems: [T] = []
     var callback: (T) -> Void
     let arrayQ = DispatchQueue(label: "arrayQ",

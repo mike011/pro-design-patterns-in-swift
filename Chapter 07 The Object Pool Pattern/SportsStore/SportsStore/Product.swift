@@ -1,6 +1,6 @@
 import Foundation
 
-class Product: NSObject, NSCopying {
+class Product: NSObject, @unchecked Sendable, NSCopying {
 
     private(set) var name: String
     private(set) var productDescription: String

@@ -9,10 +9,11 @@ class ProductTableCell: UITableViewCell {
     var product: Product?
 }
 
-var handler = { (p: Product) in
-    print("Change: \(p.name) \(p.stockLevel) items in stock")
-}
+//var handler = { (p: Product) in
+//    print("Change: \(p.name) \(p.stockLevel) items in stock")
+//}
 
+@MainActor
 class ViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet var totalStockLabel: UILabel!

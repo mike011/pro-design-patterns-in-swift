@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 final class NetworkPool {
     private let connectionCount = 3
     private var connections = [NetworkConnection]()
@@ -25,8 +26,10 @@ final class NetworkPool {
 
     private func doReturnConnection(conn: NetworkConnection) {
         queue.async() { () in
-            self.connections.append(conn)
-            self.semaphore.signal()
+            MainActor.assumeIsolated {
+                self.connections.append(conn)
+                self.semaphore.signal()
+            }
         }
     }
 
@@ -40,7 +43,7 @@ final class NetworkPool {
 
     private class var sharedInstance: NetworkPool {
         enum SingletonWrapper {
-            static let singleton = NetworkPool()
+            @MainActor static let singleton = NetworkPool()
         }
         return SingletonWrapper.singleton
     }

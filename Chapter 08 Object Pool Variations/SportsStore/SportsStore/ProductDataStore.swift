@@ -2,29 +2,31 @@ import Foundation
 
 final class ProductDataStore {
     var callback: ((Product) -> Void)?
-    private var networkQ: dispatch_queue_t
-    private var uiQ: dispatch_queue_t
+    private var networkQ: DispatchQueue
+    private var uiQ: DispatchQueue
     lazy var products: [Product] = self.loadData()
 
     init() {
-        networkQ = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
-        uiQ = dispatch_get_main_queue()
+        networkQ = DispatchQueue.global()
+        uiQ = DispatchQueue.main
     }
 
     private func loadData() -> [Product] {
         for p in productData {
-            dispatch_async(networkQ) { () in
-                let stockConn = NetworkPool.getConnection()
-                let level = stockConn.getStockLevel(p.name)
-                if level != nil {
-                    p.stockLevel = level!
-                    dispatch_async(self.uiQ) { () in
-                        if self.callback != nil {
-                            self.callback!(p)
+            networkQ.async() { () in
+                MainActor.assumeIsolated {
+                    let stockConn = NetworkPool.getConnection()
+                    let level = stockConn.getStockLevel(name: p.name)
+                    if level != nil {
+                        p.stockLevel = level!
+                        self.uiQ.async() { () in
+                            if self.callback != nil {
+                                self.callback!(p)
+                            }
                         }
                     }
+                    NetworkPool.returnConnecton(conn: stockConn)
                 }
-                NetworkPool.returnConnecton(stockConn)
             }
         }
         return productData

@@ -1,6 +1,6 @@
 import Foundation
 
-class NetworkConnection {
+final class NetworkConnection: Sendable {
     private let stockData: [String: Int] = [
         "Kayak": 10,
         "Lifejacket": 14,

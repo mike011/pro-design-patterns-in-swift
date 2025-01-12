@@ -8,9 +8,7 @@ final class Logger<T> where T: NSObject, T: NSCopying {
     var dataItems: [T] = []
     var callback: (T) -> Void
     var arrayQ = DispatchQueue(label: "arrayQ", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
-    // var arrayQ = dispatch_queue_create("arrayQ", DISPATCH_QUEUE_CONCURRENT);
     var callbackQ = DispatchQueue(label: "callbackQ")
-//    var callbackQ = dispatch_queue_create("callbackQ", DISPATCH_QUEUE_SERIAL);
 
     fileprivate init(callback: @escaping ((T) -> Void), protect: Bool = true) {
         self.callback = callback

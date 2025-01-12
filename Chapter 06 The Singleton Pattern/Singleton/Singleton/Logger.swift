@@ -2,7 +2,7 @@ import Foundation
 
 let globalLogger = Logger()
 
-final class Logger {
+final class Logger: @unchecked Sendable {
     private var data = [String]()
     private let arrayQ = DispatchQueue(label: "arrayQ")
 
