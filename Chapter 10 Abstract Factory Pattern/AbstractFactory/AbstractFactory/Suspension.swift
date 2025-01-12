@@ -1,12 +1,12 @@
 import Foundation
 
-@objc protocol Suspension {
+@objc protocol Suspension: Sendable {
     var suspensionType: SuspensionOption { get }
 
-    class func getInstance() -> Suspension
+    static func getInstance() -> Suspension
 }
 
-class RoadSuspension: Suspension {
+final class RoadSuspension: Suspension, @unchecked Sendable {
     var suspensionType = SuspensionOption.STANDARD
 
     private init() {}
@@ -16,7 +16,7 @@ class RoadSuspension: Suspension {
     }
 }
 
-class OffRoadSuspension: Suspension {
+final class OffRoadSuspension: Suspension, @unchecked Sendable {
     var suspensionType = SuspensionOption.SOFT
 
     private init() {}
@@ -26,12 +26,13 @@ class OffRoadSuspension: Suspension {
     }
 }
 
-class RaceSuspension: NSObject, NSCopying, Suspension {
+final class RaceSuspension: NSObject, NSCopying, Suspension, @unchecked Sendable {
+
     var suspensionType = SuspensionOption.SPORTS
 
     override private init() {}
 
-    func copyWithZone(zone _: NSZone) -> AnyObject {
+    func copy(with zone: NSZone? = nil) -> Any {
         return RaceSuspension()
     }
 
@@ -43,6 +44,6 @@ class RaceSuspension: NSObject, NSCopying, Suspension {
     }
 
     class func getInstance() -> Suspension {
-        return prototype.copy() as Suspension
+        return prototype.copy() as! any Suspension as Suspension
     }
 }

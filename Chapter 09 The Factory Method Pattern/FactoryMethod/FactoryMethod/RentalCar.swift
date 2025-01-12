@@ -1,4 +1,4 @@
-class RentalCar {
+class RentalCar: @unchecked Sendable {
     private var nameBV: String
     private var passengersBV: Int
     private var priceBV: Float
@@ -27,7 +27,7 @@ class RentalCar {
     }
 }
 
-class Compact: RentalCar {
+class Compact: RentalCar, @unchecked Sendable {
     fileprivate convenience init() {
         self.init(name: "VW Golf", passengers: 3, price: 20)
     }
@@ -52,7 +52,7 @@ class Compact: RentalCar {
     }
 }
 
-class SmallCompact: Compact {
+class SmallCompact: Compact, @unchecked Sendable {
     private init() {
         super.init(name: "Ford Fiesta", passengers: 3, price: 15)
     }
@@ -65,7 +65,7 @@ class SmallCompact: Compact {
     }
 }
 
-class SUV: RentalCar {
+class SUV: RentalCar, @unchecked Sendable {
     private init() {
         super.init(name: "Cadillac Escalade", passengers: 8, price: 75)
     }

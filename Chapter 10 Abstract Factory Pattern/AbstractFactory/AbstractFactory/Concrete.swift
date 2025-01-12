@@ -12,7 +12,7 @@ class CompactCarFactory: CarFactory {
     }
 }
 
-class SportsCarFactory: CarFactory {
+class SportsCarFactory: CarFactory, @unchecked Sendable {
     override func createFloorplan() -> Floorplan {
         return ShortFloorplan()
     }

@@ -11,7 +11,7 @@ struct Car {
     var drive: Drivetrain
 
     init(carType: Cars) {
-        let concreteFactory = CarFactory.getFactory(carType)
+        let concreteFactory = CarFactory.getFactory(car: carType)
         floor = concreteFactory!.createFloorplan()
         suspension = concreteFactory!.createSuspension()
         drive = concreteFactory!.createDrivetrain()
@@ -19,10 +19,10 @@ struct Car {
     }
 
     func printDetails() {
-        println("Car type: \(carType.rawValue)")
-        println("Seats: \(floor.seats)")
-        println("Engine: \(floor.enginePosition.rawValue)")
-        println("Suspension: \(suspension.suspensionType.rawValue)")
-        println("Drive: \(drive.driveType.rawValue)")
+        print("Car type: \(carType.rawValue)")
+        print("Seats: \(floor.seats)")
+        print("Engine: \(floor.enginePosition.rawValue)")
+        print("Suspension: \(suspension.suspensionType.rawValue)")
+        print("Drive: \(drive.driveType.rawValue)")
     }
 }

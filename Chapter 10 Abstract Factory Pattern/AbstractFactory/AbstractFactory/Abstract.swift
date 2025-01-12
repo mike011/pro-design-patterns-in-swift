@@ -27,7 +27,7 @@ class CarFactory {
         }
         var factory = factoryType.sharedInstance
         if factory == nil {
-            factory = factoryType()
+            factory = factoryType.init()
         }
         return factory
     }
